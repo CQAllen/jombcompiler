@@ -1,11 +1,13 @@
 package cqut.lexicalAnalysis.impl;
 
 import cqut.lexicalAnalysis.Recog;
-import cqut.util.ReadFile;
+import cqut.util.EncodeTable;
 import cqut.util.Token;
+import cqut.util.entity.Source;
+import cqut.util.entity.TokenMeta;
 
 /*
- * ÔËËã·û
+ * è¿ç®—ç¬¦å·
  * Design by JiaoJian
  */
 public class OperaterAnalysis implements Recog{
@@ -20,46 +22,122 @@ public class OperaterAnalysis implements Recog{
 
 	@Override
 	public boolean recog(Character ch) {
-		while (true){
+//		while (true){
 			isOperater(ch);
 			switch(state){
-			case 1:ReadFile.sort();
+			case 1:Source.getInstance().sort();
 			case 0:
 				error();
-			    break;
+				Source.getInstance().sort();
+//			    break;
 		       }
-			}
-		
+//			}
+		return true;
 	}
 	
 	public  boolean isOperater(Character c){
+		TokenMeta tokenMeta;
 		switch(c){
-		case '+':Token.getOperaterList().add(c.toString());return true;
-		case '-':Token.getOperaterList().add(c.toString());return true;
-		case '*':Token.getOperaterList().add(c.toString());return true;
-		case '/':if(noteOrDivsionAnalysis.isDivsion(c)){return true;}else return false;//±£´æµÄ¹ý³ÌÔÚisDivision·½·¨ÖÐ´¦ÀíÁË¡£
-		case '<':if(ReadFile.getNextChar().equals('='))
+		case '+':
+			     tokenMeta=new TokenMeta();
+		         tokenMeta.setLine(Source.getInstance().getRow());
+		         tokenMeta.setMeta("+");
+		         tokenMeta.setPointer(EncodeTable.search("+"));
+		         Token.getTokenTable().add(tokenMeta);
+			     return true;
+		case '-':
+			      tokenMeta=new TokenMeta();
+                 tokenMeta.setLine(Source.getInstance().getRow());
+                 tokenMeta.setMeta("-");
+                 tokenMeta.setPointer(EncodeTable.search("-"));
+                 Token.getTokenTable().add(tokenMeta);
+	             return true;
+		case '*':
+			tokenMeta=new TokenMeta();
+            tokenMeta.setLine(Source.getInstance().getRow());
+            tokenMeta.setMeta("*");
+            tokenMeta.setPointer(EncodeTable.search("*"));
+            Token.getTokenTable().add(tokenMeta);
+			return true;
+		case '/':if(noteOrDivsionAnalysis.isDivsion(c)){return true;}else return false;
+		case '<':if(Source.getInstance().getNextCharacter().equals('='))
 		           {
-			         Token.getOperaterList().add("<=");
+			tokenMeta=new TokenMeta();
+            tokenMeta.setLine(Source.getInstance().getRow());
+            tokenMeta.setMeta("+");
+            tokenMeta.setPointer(EncodeTable.search("+"));
+            Token.getTokenTable().add(tokenMeta);
+            return true;
 			        }else
-			        	{Token.getOperaterList().add(c.toString());
-			        	  ReadFile.row--;
+			        	{
+			        	tokenMeta=new TokenMeta();
+			            tokenMeta.setLine(Source.getInstance().getRow());
+			            tokenMeta.setMeta("<");
+			            tokenMeta.setPointer(EncodeTable.search("<"));
+			            Token.getTokenTable().add(tokenMeta);
+			        	Source.getInstance().getLastCharacter();//ç”¨æ¥å›žé€€
 			        	}
 		           return true;
-		case '>':if(ReadFile.getNextChar().equals('='))
-                 {
-	               Token.getOperaterList().add(">=");
-	             }else
-	        	    {  Token.getOperaterList().add(c.toString());
-	        	         ReadFile.row--;
-	        	    }
-                     return true;
+		case '>':
+			
+			if(Source.getInstance().getNextCharacter().equals('='))
+		           {
+			tokenMeta=new TokenMeta();
+            tokenMeta.setLine(Source.getInstance().getRow());
+            tokenMeta.setMeta(">=");
+            tokenMeta.setPointer(EncodeTable.search(">="));
+            Token.getTokenTable().add(tokenMeta);
+            return true;
+			        }else
+			        	{
+			        	tokenMeta=new TokenMeta();
+			            tokenMeta.setLine(Source.getInstance().getRow());
+			            tokenMeta.setMeta(">");
+			            tokenMeta.setPointer(EncodeTable.search(">"));
+			            Token.getTokenTable().add(tokenMeta);
+			        	Source.getInstance().getLastCharacter();//ç”¨æ¥å›žé€€
+			        	}
+		               return true;
           
-          
-		case '=':Token.getOperaterList().add(c.toString());return true;
+		case '=':	
+			
+			if(Source.getInstance().getNextCharacter().equals('='))
+	           {
+		             tokenMeta=new TokenMeta();
+                     tokenMeta.setLine(Source.getInstance().getRow());
+                     tokenMeta.setMeta("==");
+                     tokenMeta.setPointer(EncodeTable.search("=="));
+                     Token.getTokenTable().add(tokenMeta);
+                       return true;
+		        }else
+		        	{
+		        	tokenMeta=new TokenMeta();
+		            tokenMeta.setLine(Source.getInstance().getRow());
+		            tokenMeta.setMeta("=");
+		            tokenMeta.setPointer(EncodeTable.search("="));
+		            Token.getTokenTable().add(tokenMeta);
+		        	Source.getInstance().getLastCharacter();//ç”¨æ¥å›žé€€
+		        	}
+	           return true;
+	           
+		
+		case '!':
+			if(Source.getInstance().getNextCharacter().equals('='))
+	           {
+		         tokenMeta=new TokenMeta();
+                 tokenMeta.setLine(Source.getInstance().getRow());
+                 tokenMeta.setMeta("!=");
+                 tokenMeta.setPointer(EncodeTable.search("!="));
+                 Token.getTokenTable().add(tokenMeta);
+                 return true;
+		        }else{
+		        	error();
+		        }
 		}
 		
 		
+		
+			
 		return false;
 	} 
 

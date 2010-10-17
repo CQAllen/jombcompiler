@@ -2,9 +2,9 @@ package cqut.lexicalAnalysis.impl.util;
 
 import java.util.Stack;
 /*
- * 焦建
+ * 焦健
  */
-public class MyStack {
+public class MyStack2 {
 	private static Stack<Character> stack;
 	
 	static {
