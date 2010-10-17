@@ -97,6 +97,14 @@ public class Source {
 		return chars[--colspan];
 	}
 
+	public int getRow() {
+		return row;
+	}
+
+	public int getColspan() {
+		return colspan;
+	}
+
 	public void sort() {
 
 	}
