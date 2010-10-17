@@ -33,7 +33,7 @@ public class Source {
 
 	private static void init() {
 		sourceCode = new Source();
-		sources = ReadFile.read("D://cc.txt");
+		sources = ReadFile.read("src/sample.jom");
 		MAX_LINE = sources.size();
 		row = 0;
 		colspan = 0;
@@ -95,5 +95,9 @@ public class Source {
 			return chars[colspan];
 		}
 		return chars[--colspan];
+	}
+
+	public void sort() {
+
 	}
 }

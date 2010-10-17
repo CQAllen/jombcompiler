@@ -1,0 +1,5 @@
+int aasdf = 10;
+int bvv = aasdf/10;
+write(bvv);
+write(bvv);
+write(bvv);
