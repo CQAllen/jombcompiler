@@ -12,7 +12,6 @@ import cqut.util.Token;
  */
 
 public class DelimiterAnalysis implements Recog{
-   
    int state=1;//״̬
 	@Override
 	public void error() {
