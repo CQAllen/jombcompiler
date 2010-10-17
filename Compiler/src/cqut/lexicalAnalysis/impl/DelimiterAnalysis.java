@@ -8,7 +8,7 @@ import cqut.util.ReadFile;
 import cqut.util.Token;
 /*
  * Design by JiaoJian
- * ½ç·ûºÅ
+ * ï¿½ï¿½ï¿½ï¿½
  */
 
 public class DelimiterAnalysis implements Recog{
@@ -16,12 +16,11 @@ public class DelimiterAnalysis implements Recog{
    int state=1;//×´Ì¬
 	@Override
 	public void error() {
-		System.out.println("µÚ"+ReadFile.row+"ÐÐ£¬µÚ"+ReadFile.col+"ÁÐÓÐ´í");
+		System.out.println("ï¿½ï¿½"+ReadFile.row+"ï¿½Ð£ï¿½ï¿½ï¿½"+ReadFile.col+"ï¿½ï¿½ï¿½Ð´ï¿½");
 		
 	}
-      
 	@Override
-	public boolean recog(Character ch) {//chÊÇ·ÖÀà·½·¨sortÀïÃæ¶Áµ½µÄÄÇ¸ö×Ö·û
+	public boolean recog(Character ch) {//chï¿½Ç·ï¿½ï¿½à·½ï¿½ï¿½sortï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¸ï¿½ï¿½Ö·ï¿½
 		
 		while (true){
 			isDelimiter(ch);
@@ -39,20 +38,20 @@ public class DelimiterAnalysis implements Recog{
 	
 	public boolean isDelimiter(Character c){
 		
-		//ÆäËûÈËÒªÅÐ¶ÏÒ»¸ö×Ö·ûÊÇ²»ÊÇ½ç·û¾Íµ÷ÓÃÕâ¸ö·½·¨
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½Ð¶ï¿½Ò»ï¿½ï¿½ï¿½Ö·ï¿½ï¿½Ç²ï¿½ï¿½Ç½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		Character ch=c;
 		switch(ch){
 		
 		case ';': Token.getDelimiterList().add(ch.toString()); 
 		          if(MyStack.getStack().size()!=0)
 		          {
-		        	  state=0;//³ö´í ×´Ì¬×ª»»Îª0
+		        	  state=0;//ï¿½ï¿½ï¿½ï¿½ ×´Ì¬×ªï¿½ï¿½Îª0
 		        	  MyStack.getStack().clear();
 		        	 }
 		          return true;
-			//ºóÃæ´ø¾ßÌåµÄ´¦Àí·½·¨¡£Èç¹û³ö´í¾Í½«state=1;Èç¹û²»³ö´í£¬ÄÇ¾Í×´Ì¬ÒÀÈ»ÊÇ0¡£¾Í¼ÌÐøÏòÏÂÖ´ÐÐ
+			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í½ï¿½state=1;ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½Ç¾ï¿½×´Ì¬ï¿½ï¿½È»ï¿½ï¿½0ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½
 		case ',':Token.getDelimiterList().add(ch.toString());return true;
-		case '.': Token.getDelimiterList().add(ch.toString());return true;//¾äºÅµÄÓÃÍ¾£ºÈç12.5
+		case '.': Token.getDelimiterList().add(ch.toString());return true;//ï¿½ï¿½Åµï¿½ï¿½ï¿½Í¾ï¿½ï¿½ï¿½ï¿½12.5
 		case ':':Token.getDelimiterList().add(ch.toString());return true;
 		case '"':Token.getDelimiterList().add(ch.toString());return true;
 		case '(':{Token.getDelimiterList().add(c.toString()); 
