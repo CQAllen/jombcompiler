@@ -2,115 +2,150 @@ package cqut.lexicalAnalysis.impl;
 
 
 import cqut.lexicalAnalysis.Recog;
-import cqut.util.ReadFile;
+import cqut.util.EncodeTable;
 import cqut.util.Token;
+import cqut.util.entity.Source;
+import cqut.util.entity.TokenMeta;
  /*
   * Designed by JiaoJian
-  * ´¦Àí×¢ÊÍ ºÍ ³ıºÅ 
+  * åˆ¤æ–­æ˜¯æ³¨é‡Šè¿˜æ˜¯é™¤å·
   */
 
 public class NoteOrDivsionAnalysis implements Recog {
 	
 	IdentifierAnalysis identifier = new IdentifierAnalysis();
 	
-
+	int currentRow;
     int state=1;
 
 
 	@Override
 	public boolean recog(Character ch) {
-		while (true){
+//		while (true){
 			isDivsion(ch);
 			switch(state){
-			case 1:ReadFile.sort();
+			case 1:Source.getInstance().sort();
 			case 0:
 				error();
-			    break;
+				//è¿™é‡Œéœ€è¦ä¸€ä¸ªreturnBackTo();æ–¹æ³•æ¥å›é€€åˆ°åŸæ¥æ³¨é‡Šå¼€å§‹çš„åœ°æ–¹
+			    Source.getInstance().sort();
 		       }
-			}
+//			}
+			return true;
 	}
 	public boolean isDivsion(Character ch){
-		if(ReadFile.getNextChar().equals('/')){
-			Token.getDelimiterList().add("//");
-			sigenlineNote();return false;
+		TokenMeta tokenMeata;
+		if(Source.getInstance().getNextCharacter().equals('/')){
+			 tokenMeata=new TokenMeta();
+			tokenMeata.setLine(Source.getInstance().getRow());
+			tokenMeata.setMeta("//");
+			tokenMeata.setPointer(EncodeTable.search("//"));
+			Token.getTokenTable().add(tokenMeata);
+            sigenlineNote();
+            return false;
 		}
-		else if(ReadFile.getNextChar().equals('*')){
-			Token.getDelimiterList().add("/*");
-			Token.getDelimiterList().add("*/");
-				doubleNote();return false;//¼ÌĞø¶ÁÈ¡ÏÂÒ»¸ö×Ö·û,b²¢ÇÒ·ÖÀà´¦Àí
+		else if(Source.getInstance().getNextCharacter().equals('*')){
+			tokenMeata=new TokenMeta();
+			tokenMeata.setLine(Source.getInstance().getRow());
+			tokenMeata.setMeta("/*");
+			tokenMeata.setPointer(EncodeTable.search("/*"));
+			Token.getTokenTable().add(tokenMeata);
+
+			doubleNote();
+			
+			 tokenMeata=new TokenMeta();
+			tokenMeata.setLine(Source.getInstance().getRow());
+			tokenMeata.setMeta("*/");
+			tokenMeata.setPointer(EncodeTable.search("*/"));
+			Token.getTokenTable().add(tokenMeata);
+			
+				return false;
 			}
-		else {//Ç°ÃæÁ½ÖÖ×¢ÊÍ¶¼²»ÉÏÊÇ£¬±íÃ÷¾ÍÊÇ³ıºÅ£¬È»ºó½«³ıºÅ·Åµ½Token±íÖĞÏàÓ¦µÄÎ»ÖÃ
-			
-			Token.getOperaterList().add("/");
-			
-			//ÏÂÃæÊÇÅĞ¶Ï³ıºÅÇ°ºóÊÇ·ñÓĞ´í
-			  state=0;
-				return true;
+		else {
+			tokenMeata=new TokenMeta();
+			tokenMeata.setLine(Source.getInstance().getRow());
+			tokenMeata.setMeta("/");
+			tokenMeata.setPointer(EncodeTable.search("/"));
+			Token.getTokenTable().add(tokenMeata);
+		    return true;
 			}
 		
 	}
 	
 	
 
-	private boolean sigenlineNote(){//µ¥ĞĞ×¢ÊÍ
+	private boolean sigenlineNote(){//ï¿½ï¿½ï¿½ï¿½×¢ï¿½ï¿½
 		while(true){
-			if(ReadFile.getNextChar().equals('\n')){ //Ò»Ö±¶ÁÈ¡µ½ÎÄ¼şµÄ»»ĞĞ·û¡£±íÃ÷¸ÃĞĞ×¢ÊÍ½áÊø
+			if(Source.getInstance().getNextCharacter().equals('\n')){ //Ò»Ö±ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ä»ï¿½ï¿½Ğ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¢ï¿½Í½ï¿½ï¿½ï¿½
 				break;
 			 }
 			}
 			
-			return false;//²»ÊÇ³ıºÅ¾Í»»»Øfalse
+			return false;//ï¿½ï¿½ï¿½Ç³ï¿½Å¾Í»ï¿½ï¿½ï¿½false
 			
 	}
 	
 	
 	
-	private boolean doubleNote(){ //¶àĞĞ×¢ÊÍ
+	private boolean doubleNote(){ //ï¿½ï¿½ï¿½ï¿½×¢ï¿½ï¿½
+		 currentRow= Source.getInstance().getRow();
 		while(true){
-			if(ReadFile.getNextChar().equals('*')&&ReadFile.getNextChar().equals('/')){//Ò»Ö±¶ÁÈ¡µ½Á¬ĞøÁ½¸ö×Ö·ûÊÇ* / ±íÃ÷¶à¶Î×¢ÊÍ½áÊø
-				break;  //¶à¶Î×¢ÊÍ½áÊø£¬Ìø³öÑ­»·
+			if(Source.getInstance().getNextCharacter()==null){
+				state=0;
+				break;
+			}
+			if(Source.getInstance().getNextCharacter().equals('*')&&Source.getInstance().getNextCharacter().equals('/')){
+				break;  
 			}
 		}
 		
-		return false;// ÊÇ×¢ÊÍ£¬¶ø²»ÊÇ³ıºÅ£¬ËùÒÔ·µ»Øfalse
+		return true;// ï¿½ï¿½×¢ï¿½Í£ï¿½ï¿½ï¿½ï¿½Ç³ï¿½Å£ï¿½ï¿½ï¿½ï¿½Ô·ï¿½ï¿½ï¿½false
 	}
 	
 
+//	public int  isError() {
+//		
+//		  int currentrow=Source.getInstance().getRow()-1;// å›é€€ä¸€æ ¼
+//		 StringBuffer bf=new StringBuffer();
+//		 Character c;
+//		 String str;
+//		while(true){
+//			if((c=(Character)Source.getInstance().getLastCharacter()).equals('=')){
+//				
+//			  break;
+//		 }
+//	}
+//		
+//		for(int i=Source.getInstance().getRow();i<currentrow-1;i++){
+//			bf.append(Source.getInstance().getNextCharacter());
+//		}
+//		str=bf.toString();
+//		boolean b1=identifier.getIsValueIdentifier().containsValue(str);
+//		if(b1){
+//			Source.getInstance().getNextCharacter();
+//			while(true){
+//			    if((c=(Character)Source.getInstance().getNextCharacter()).equals(';')){
+//			    	break;
+//			 }
+//			  bf.append(c);
+//		  }
+//			str=bf.toString();
+//			boolean b2=identifier.getIsValueIdentifier().containsValue(str);
+//			if(b2){
+//				return state=1; 
+//			} else {
+//				return  state=0;
+//				
+//			}
+//		} else {
+//			return state=0;
+//			
+//		}
+//		
+//	}
+	@Override
 	public void error() {
-		//ÏÂÃæÊÇÅĞ¶Ï³ıºÅÇ°ºóÊÇ·ñÓĞ´í
-		  int currentrow=(ReadFile.row=ReadFile.row-1);// '/'´¦µÄÏÂ±ê
-		 StringBuffer bf=new StringBuffer();
-		 Character c;
-		 String str;
-		while(true){
-			if((c=(Character)ReadFile.getLastChar()).equals('=')){//´Ó/¿ªÊ¼£¬Èç¹ûÉÏÒ»¸ö×Ö·ûÊÇ=£¬¾ÍÍ£Ö¹»ØÍË¡£Ò²¾Í»ØÍËµ½ÁË=ÄÇÀï¡£
-				
-			  break;
-		 }
-	}
-		
-		for(int i=ReadFile.row;i<currentrow;i++){
-			bf.append(ReadFile.getLastChar());
-		}
-		str=bf.toString();
-		boolean b1=identifier.getIsValueIdentifier().containsValue(str);
-		if(b1){
-			while(true){
-			    if((c=(Character)ReadFile.getNextChar()).equals(';')){
-			    	break;
-			 }
-			  bf.append(c);
-		  }
-			str=bf.toString();
-			boolean b2=identifier.getIsValueIdentifier().containsValue(str);
-			if(b2){
-				return ; 
-			} else {
-				System.out.println("µÚ"+ReadFile.col+"ĞĞ³ö´í");
-			}
-		} else {
-			System.out.println("µÚ"+ReadFile.col+"ĞĞ³ö´í");
-		}
+		System.out.println(currentRow+"è¡Œå‡ºé”™");
 		
 	}
 
