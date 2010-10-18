@@ -13,7 +13,7 @@ import cqut.util.entity.TokenMeta;
 
 public class NoteOrDivsionAnalysis implements Recog {
 	
-	IdentifierAnalysis identifier = new IdentifierAnalysis();
+
 	
 	private static NoteOrDivsionAnalysis n;
 	int currentRow;
