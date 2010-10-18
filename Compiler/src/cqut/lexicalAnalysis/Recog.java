@@ -1,8 +1,18 @@
 package cqut.lexicalAnalysis;
 
 public interface Recog {
-	
-	public void error();
 
-	public boolean recog(Character ch);
+	/**
+	 * 出错信息发布
+	 * 
+	 * @param message
+	 */
+	public void error(String message);
+
+	/**
+	 * 识别各种字符
+	 * 
+	 * @param ch
+	 */
+	public void recog(Character ch);
 }
