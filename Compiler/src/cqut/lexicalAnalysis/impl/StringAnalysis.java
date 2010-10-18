@@ -8,8 +8,7 @@ import cqut.util.entity.TokenMeta;
 
 /**
  * 
- * @author Allen
- * 字符串分析
+ * @author Allen 字符串分析
  */
 
 public class StringAnalysis implements Recog {
