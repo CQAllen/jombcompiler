@@ -14,10 +14,15 @@ import cqut.util.entity.TokenMeta;
 public class NoteOrDivsionAnalysis implements Recog {
 	
 	IdentifierAnalysis identifier = new IdentifierAnalysis();
-	
+	private static NoteOrDivsionAnalysis n;
 	int currentRow;
     int state=1;
-
+    static {
+    	n=new NoteOrDivsionAnalysis();
+    }
+    public static NoteOrDivsionAnalysis getInstance(){
+    	return n;
+    }
 
 	@Override
 	public boolean recog(Character ch) {

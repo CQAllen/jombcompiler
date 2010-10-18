@@ -2,12 +2,11 @@ package cqut.lexicalAnalysis.impl;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
 import cqut.lexicalAnalysis.Recog;
-import cqut.lexicalAnalysis.impl.util.MyList;
-import cqut.lexicalAnalysis.impl.util.MyList2;
-import cqut.lexicalAnalysis.impl.util.MyStack;
-import cqut.lexicalAnalysis.impl.util.MyStack2;
-import cqut.lexicalAnalysis.impl.util.MyStack3;
 import cqut.util.EncodeTable;
 import cqut.util.Token;
 /*
@@ -18,6 +17,14 @@ import cqut.util.entity.Source;
 import cqut.util.entity.TokenMeta;
 
 public class DelimiterAnalysis implements Recog{
+	private static DelimiterAnalysis d;
+	static {
+		d=new DelimiterAnalysis();
+	}
+	public static DelimiterAnalysis getInstance(){
+		return d;
+	}
+	
    int state=1;//״̬
 	@Override
 	public void error() {
@@ -200,3 +207,69 @@ public class DelimiterAnalysis implements Recog{
 	
 
 }
+
+class MyList {//用来记录一句话完了后 ，看引号的个数是基数还是偶数。
+	private static List<Object> list ;
+	
+	static {
+		list=new ArrayList<Object> ();
+	}
+	public static List<Object>  getList() {
+		return list;
+	}
+
+}
+
+class MyList2 {
+	private static List<Object> list ;
+	
+	static {
+		list=new ArrayList<Object> ();
+	}
+	public static List<Object>  getList() {
+		return list;
+	}
+
+}
+
+
+class MyStack {
+	private static Stack<Character> stack;
+	
+	static {
+		stack=new Stack<Character>();
+	}
+	
+	public static Stack<Character> getStack() {
+		return stack;
+	}
+
+}
+
+
+class MyStack2 {
+	private static Stack<Character> stack;
+	
+	static {
+		stack=new Stack<Character>();
+	}
+	
+	public static Stack<Character> getStack() {
+		return stack;
+	}
+
+}
+
+class MyStack3 {
+	private static Stack<Character> stack;
+	
+	static {
+		stack=new Stack<Character>();
+	}
+	
+	public static Stack<Character> getStack() {
+		return stack;
+	}
+
+}
+

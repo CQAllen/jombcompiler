@@ -13,7 +13,16 @@ import cqut.util.entity.TokenMeta;
 public class OperaterAnalysis implements Recog{
     int state=1;
     NoteOrDivsionAnalysis noteOrDivsionAnalysis = new NoteOrDivsionAnalysis();
+    private static OperaterAnalysis o;
     
+    
+    static {
+    	o=new OperaterAnalysis();
+    	
+    }
+    public static OperaterAnalysis getInstance(){
+    	return o;
+    }
 	@Override
 	public void error() {
 		
