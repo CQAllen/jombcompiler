@@ -5,10 +5,11 @@ import java.util.List;
 import cqut.lexicalAnalysis.Recog;
 import cqut.lexicalAnalysis.impl.DelimiterAnalysis;
 import cqut.lexicalAnalysis.impl.DigitAnalysis;
-import cqut.lexicalAnalysis.impl.IdentifierAnalysis;
 import cqut.lexicalAnalysis.impl.NoteOrDivsionAnalysis;
+import cqut.lexicalAnalysis.impl.StringAnalysis;
 import cqut.util.EncodeTable;
 import cqut.util.ReadFile;
+import cqut.util.SystemProperty;
 import cqut.util.Token;
 
 /**
@@ -36,11 +37,12 @@ public class Source {
 	private static int row;
 	private static int colspan;
 
-	private static int MAX_LINE;
+	private static int MAX_LINE;// 源代码文件的行数
 
 	private static void init() {
 		sourceCode = new Source();
-		sources = ReadFile.read("src/sample.jom");
+		SystemProperty.readProperties();// 读取语言编码表
+		sources = ReadFile.read(ReadFile.sourcePath);// 读源文件
 		MAX_LINE = sources.size();
 		row = 0;
 		colspan = 0;
@@ -139,13 +141,13 @@ public class Source {
 		if (curr.matches("\\d{1}")) {// 如果是数字
 			recog = new DigitAnalysis();
 		} else if (curr.matches("[a-zA-Z_]")) {// 如果是字目或者下划线
-			recog = new IdentifierAnalysis();
+			recog = StringAnalysis.getStringAnalysis();
 		} else if (curr.matches("["
 				+ EncodeTable.findCharactersByType(Token.ENCODETYPE_DELIMITER)
 				+ "]")) {// 如果是界符
-			recog = new DelimiterAnalysis();
+			recog = DelimiterAnalysis.getInstance();
 		} else if (ch == '/') {// 如果是反斜杠
-			recog = new NoteOrDivsionAnalysis();
+			recog = NoteOrDivsionAnalysis.getInstance();
 		}
 		recog.recog(ch);
 	}

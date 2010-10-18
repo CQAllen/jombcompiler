@@ -14,6 +14,9 @@ import java.util.List;
  * 
  */
 public class ReadFile {
+	
+	public static String sourcePath = "src/sample.jom";
+	
 	public static List<String> read(String path) {
 		List<String> source = new ArrayList<String>();
 		FileReader fr = null;
