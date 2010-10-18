@@ -19,8 +19,13 @@ public class StringAnalysis implements Recog {
 	static StringBuffer temp = new StringBuffer();// 字符缓存
 	static int state = 1;// 1表示是关键字 2表示是标识符 0表示程序出错
 
-	public StringAnalysis getStringAnalysis() {
-		SA = new StringAnalysis();
+	private StringAnalysis() {
+	}
+
+	public static StringAnalysis getStringAnalysis() {
+		if (SA == null) {
+			SA = new StringAnalysis();
+		}
 		return SA;
 	}
 
@@ -43,7 +48,7 @@ public class StringAnalysis implements Recog {
 			break;
 		}
 		}
-
+		Source.getInstance().sort();
 	}
 
 	public void error(String message) {
