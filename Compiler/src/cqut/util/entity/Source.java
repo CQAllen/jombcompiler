@@ -2,6 +2,7 @@ package cqut.util.entity;
 
 import java.util.List;
 
+import cqut.lexicalAnalysis.Recog;
 import cqut.util.ReadFile;
 
 /**
@@ -52,6 +53,7 @@ public class Source {
 		if (row == MAX_LINE) {// 当前已经是最后一行，无法得到下一行
 			return null;
 		}
+		colspan = 0;// 转到开头
 		return sources.get(row++);
 	}
 
@@ -64,6 +66,7 @@ public class Source {
 		if (row == 0) {// 当前已经是第一行，无法取得上一行
 			return null;
 		}
+		colspan = 0;// 转到开头
 		return sources.get(row--);
 	}
 
@@ -106,7 +109,6 @@ public class Source {
 	}
 
 	public void sort() {
-		
-
+		Recog recog;
 	}
 }
