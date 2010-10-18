@@ -3,7 +3,13 @@ package cqut.util.entity;
 import java.util.List;
 
 import cqut.lexicalAnalysis.Recog;
+import cqut.lexicalAnalysis.impl.DelimiterAnalysis;
+import cqut.lexicalAnalysis.impl.DigitAnalysis;
+import cqut.lexicalAnalysis.impl.IdentifierAnalysis;
+import cqut.lexicalAnalysis.impl.NoteOrDivsionAnalysis;
+import cqut.util.EncodeTable;
 import cqut.util.ReadFile;
+import cqut.util.Token;
 
 /**
  * 读取源代码生成的对象
@@ -108,7 +114,39 @@ public class Source {
 		return colspan;
 	}
 
+	/**
+	 * 获取当前指针指向的字符
+	 * 
+	 * @return
+	 */
+	public Character getCurrentCharacter() {
+		return sources.get(row).toCharArray()[colspan];
+	}
+
+	/**
+	 * 获取当前行字符串
+	 * 
+	 * @return
+	 */
+	public String getCurrentLine() {
+		return sources.get(row);
+	}
+
 	public void sort() {
-		Recog recog;
+		Recog recog = null;
+		Character ch = getCurrentCharacter();
+		String curr = ch.toString();
+		if (curr.matches("\\d{1}")) {// 如果是数字
+			recog = new DigitAnalysis();
+		} else if (curr.matches("[a-zA-Z_]")) {// 如果是字目或者下划线
+			recog = new IdentifierAnalysis();
+		} else if (curr.matches("["
+				+ EncodeTable.findCharactersByType(Token.ENCODETYPE_DELIMITER)
+				+ "]")) {// 如果是界符
+			recog = new DelimiterAnalysis();
+		} else if (ch == '/') {// 如果是反斜杠
+			recog = new NoteOrDivsionAnalysis();
+		}
+		recog.recog(ch);
 	}
 }
