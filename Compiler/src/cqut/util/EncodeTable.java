@@ -44,11 +44,11 @@ public class EncodeTable {
 		case Token.ENCODETYPE_CONSTANT:
 			return find(36, 39);
 		case Token.ENCODETYPE_DELIMITER:
-			return find(40, 52).replaceAll("\\*", "").replaceFirst("/", "");
+			return find(40, 52).replaceAll("[\\* ]", "").replaceFirst("/", "");
 		case Token.ENCODETYPE_ID:
 			return find(35, 35);
 		case Token.ENCODETYPE_OPERATER:
-			return find(24, 34).replaceAll("[=<>/]", "") + "<=>";
+			return find(24, 34).replaceAll("[=<>/ ]", "") + "<=>";
 		default:
 			return null;
 		}
@@ -62,13 +62,13 @@ public class EncodeTable {
 			Map.Entry entry = (Map.Entry) it.next();
 			int index = Integer.valueOf((String) entry.getKey());
 			if (index >= begin && index <= end) {
-				sb.append(entry.getValue().toString());
+				sb.append(entry.getValue().toString() + " ");
 			}
 		}
 		return sb.toString();
 	}
 
 	public static void main(String[] args) {
-		System.out.println(findCharactersByType(Token.ENCODETYPE_OPERATER));
+		System.out.println(findCharactersByType(Token.ENCODETYPE_KEYWORD));
 	}
 }
