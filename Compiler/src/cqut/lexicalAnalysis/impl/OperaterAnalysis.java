@@ -11,6 +11,7 @@ import cqut.util.entity.TokenMeta;
  * Design by JiaoJian
  */
 public class OperaterAnalysis implements Recog{
+	
     int state=1;
     NoteOrDivsionAnalysis noteOrDivsionAnalysis = new NoteOrDivsionAnalysis();
     private static OperaterAnalysis o;
@@ -23,25 +24,27 @@ public class OperaterAnalysis implements Recog{
     public static OperaterAnalysis getInstance(){
     	return o;
     }
-	@Override
-	public void error() {
-		
-		
-	}
+
 
 	@Override
-	public boolean recog(Character ch) {
-//		while (true){
+	public void recog(Character ch) {
+
 			isOperater(ch);
 			switch(state){
-			case 1:Source.getInstance().sort();
-			case 0:
-				error();
+			case 1:                    //给当前字符已经读出的方法调用服务
+			       Source.getInstance().sort();
+			case 0:                     //给当前字符已经读出的方法调用服务
+				error(ch.toString());
 				Source.getInstance().sort();
-//			    break;
-		       }
-//			}
-		return true;
+			case 2:                    //给当前字符已经被保存，需要读出下一个字符的方法使用
+				Source.getInstance().getNextCharacter();
+		        Source.getInstance().sort();
+		    case 3:
+			    Source.getInstance().getNextCharacter();
+			    error(ch.toString());
+			    Source.getInstance().sort();
+
+		       }	
 	}
 	
 	public  boolean isOperater(Character c){
@@ -53,6 +56,7 @@ public class OperaterAnalysis implements Recog{
 		         tokenMeta.setMeta("+");
 		         tokenMeta.setPointer(EncodeTable.search("+"));
 		         Token.getTokenTable().add(tokenMeta);
+		         state=2;
 			     return true;
 		case '-':
 			      tokenMeta=new TokenMeta();
@@ -60,6 +64,7 @@ public class OperaterAnalysis implements Recog{
                  tokenMeta.setMeta("-");
                  tokenMeta.setPointer(EncodeTable.search("-"));
                  Token.getTokenTable().add(tokenMeta);
+                 state=2;
 	             return true;
 		case '*':
 			tokenMeta=new TokenMeta();
@@ -67,8 +72,9 @@ public class OperaterAnalysis implements Recog{
             tokenMeta.setMeta("*");
             tokenMeta.setPointer(EncodeTable.search("*"));
             Token.getTokenTable().add(tokenMeta);
+            state=2;
 			return true;
-		case '/':if(noteOrDivsionAnalysis.isDivsion(c)){return true;}else return false;
+//		case '/':if(noteOrDivsionAnalysis.isDivsion(c)){return true;}else return false;
 		case '<':if(Source.getInstance().getNextCharacter().equals('='))
 		           {
 			tokenMeta=new TokenMeta();
@@ -84,7 +90,7 @@ public class OperaterAnalysis implements Recog{
 			            tokenMeta.setMeta("<");
 			            tokenMeta.setPointer(EncodeTable.search("<"));
 			            Token.getTokenTable().add(tokenMeta);
-			        	Source.getInstance().getLastCharacter();//用来回退
+//			        	Source.getInstance().getLastCharacter();//用来回退
 			        	}
 		           return true;
 		case '>':
@@ -104,7 +110,7 @@ public class OperaterAnalysis implements Recog{
 			            tokenMeta.setMeta(">");
 			            tokenMeta.setPointer(EncodeTable.search(">"));
 			            Token.getTokenTable().add(tokenMeta);
-			        	Source.getInstance().getLastCharacter();//用来回退
+//			        	Source.getInstance().getLastCharacter();//用来回退
 			        	}
 		               return true;
           
@@ -125,7 +131,7 @@ public class OperaterAnalysis implements Recog{
 		            tokenMeta.setMeta("=");
 		            tokenMeta.setPointer(EncodeTable.search("="));
 		            Token.getTokenTable().add(tokenMeta);
-		        	Source.getInstance().getLastCharacter();//用来回退
+//		        	Source.getInstance().getLastCharacter();//用来回退
 		        	}
 	           return true;
 	           
@@ -140,7 +146,8 @@ public class OperaterAnalysis implements Recog{
                  Token.getTokenTable().add(tokenMeta);
                  return true;
 		        }else{
-		        	error();
+		        	state=0;
+		        	return false;
 		        }
 		}
 		
@@ -148,6 +155,13 @@ public class OperaterAnalysis implements Recog{
 		
 			
 		return false;
+	}
+
+
+	@Override
+	public void error(String message) {
+		System.out.println(message+"出错");
+		
 	} 
 
 }
