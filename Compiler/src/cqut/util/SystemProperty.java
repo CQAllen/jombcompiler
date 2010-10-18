@@ -37,4 +37,8 @@ public class SystemProperty {
 		}
 		return properties;
 	}
+
+	public static Map getProperties() {
+		return properties;
+	}
 }
