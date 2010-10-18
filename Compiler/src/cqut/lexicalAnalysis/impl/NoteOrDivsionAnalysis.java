@@ -14,6 +14,7 @@ import cqut.util.entity.TokenMeta;
 public class NoteOrDivsionAnalysis implements Recog {
 	
 	IdentifierAnalysis identifier = new IdentifierAnalysis();
+	
 	private static NoteOrDivsionAnalysis n;
 	int currentRow;
     int state=1;
@@ -25,18 +26,18 @@ public class NoteOrDivsionAnalysis implements Recog {
     }
 
 	@Override
-	public boolean recog(Character ch) {
-//		while (true){
+	public void recog(Character ch) {
 			isDivsion(ch);
 			switch(state){
-			case 1:Source.getInstance().sort();
+			case 1:Source.getInstance().getNextCharacter();
+			       Source.getInstance().sort();
 			case 0:
-				error();
-				//这里需要一个returnBackTo();方法来回退到原来注释开始的地方
+				error(ch.toString());
+				//这里需要一个returnBackTo();方法来回退到原来注释开始的地方,语法阶段
+				Source.getInstance().getNextCharacter();
 			    Source.getInstance().sort();
 		       }
-//			}
-			return true;
+	
 	}
 	public boolean isDivsion(Character ch){
 		TokenMeta tokenMeata;
@@ -95,16 +96,25 @@ public class NoteOrDivsionAnalysis implements Recog {
 	private boolean doubleNote(){ //����ע��
 		 currentRow= Source.getInstance().getRow();
 		while(true){
-			if(Source.getInstance().getNextCharacter()==null){
+			Character c= Source.getInstance().getNextCharacter();
+			Character c2=null;
+			if(c==null){
 				state=0;
 				break;
 			}
-			if(Source.getInstance().getNextCharacter().equals('*')&&Source.getInstance().getNextCharacter().equals('/')){
-				break;  
+				
+			if(c=='*'){
+				c2=Source.getInstance().getNextCharacter();
+				if(c2=='/'){
+					return true;//放回过后，需要从下一个字符开始读取
+				}
+				
 			}
+
 		}
+		return false;
 		
-		return true;// ��ע�ͣ����ǳ�ţ����Է���false
+	
 	}
 	
 
@@ -148,10 +158,12 @@ public class NoteOrDivsionAnalysis implements Recog {
 //		}
 //		
 //	}
+
+
 	@Override
-	public void error() {
-		System.out.println(currentRow+"行出错");
-		
+	public void error(String message) {
+		System.out.println(message+"多行注释出错");
+		System.out.println("第"+Source.getInstance().getRow()+"行"+Source.getInstance().getColspan()+"列出错");
 	}
 
 		

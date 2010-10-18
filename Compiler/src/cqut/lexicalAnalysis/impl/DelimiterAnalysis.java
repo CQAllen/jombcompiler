@@ -25,24 +25,18 @@ public class DelimiterAnalysis implements Recog{
 		return d;
 	}
 	
-   int state=1;//״̬
+   int state=1;
 	@Override
-	public void error() {
-		System.out.println("第"+Source.getInstance().getRow()+"行"+Source.getInstance().getColspan()+"列出错");
-		
-	}
-	@Override
-	public boolean recog(Character ch) {
-//		while (true){
+	public void recog(Character ch) {
+
 			isDelimiter(ch);
 			switch(state){
 			case 1:Source.getInstance().sort();
 			case 0:
-				error();
+				error(ch.toString());
 				Source.getInstance().sort();
 		       }
-//			}
-		return true;
+
 		}
 		
 		
@@ -203,6 +197,12 @@ public class DelimiterAnalysis implements Recog{
 		
 			
 		return false;
+	}
+	@Override
+	public void error(String message) {
+		System.out.println(message+"出错");
+		System.out.println("第"+Source.getInstance().getRow()+"行"+Source.getInstance().getColspan()+"列出错");
+		
 	}
 	
 
