@@ -34,14 +34,14 @@ public class OperaterAnalysis implements Recog{
 			case 1:                    //给当前字符已经读出的方法调用服务
 			       Source.getInstance().sort();
 			case 0:                     //给当前字符已经读出的方法调用服务
-				error(ch.toString());
+				error("运算符类"+ch.toString());
 				Source.getInstance().sort();
 			case 2:                    //给当前字符已经被保存，需要读出下一个字符的方法使用
 				Source.getInstance().getNextCharacter();
 		        Source.getInstance().sort();
 		    case 3:
 			    Source.getInstance().getNextCharacter();
-			    error(ch.toString());
+			    error("运算符类"+ch.toString());
 			    Source.getInstance().sort();
 
 		       }	

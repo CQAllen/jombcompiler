@@ -32,7 +32,7 @@ public class NoteOrDivsionAnalysis implements Recog {
 			case 1:Source.getInstance().getNextCharacter();
 			       Source.getInstance().sort();
 			case 0:
-				error(ch.toString());
+				error("注释或者除号类"+ch.toString());
 				//这里需要一个returnBackTo();方法来回退到原来注释开始的地方,语法阶段
 				Source.getInstance().getNextCharacter();
 			    Source.getInstance().sort();
@@ -163,7 +163,7 @@ public class NoteOrDivsionAnalysis implements Recog {
 	@Override
 	public void error(String message) {
 		System.out.println(message+"多行注释出错");
-		System.out.println("第"+Source.getInstance().getRow()+"行"+Source.getInstance().getColspan()+"列出错");
+//		System.out.println("第"+Source.getInstance().getRow()+"行"+Source.getInstance().getColspan()+"列出错");
 	}
 
 		
