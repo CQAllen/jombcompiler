@@ -1,1 +1,8 @@
+<<<<<<< .mine
+integer aasdf fsdoafsjd= 10;
+integer bvv = aasdf/10;
+write(bvv);
+write(bvv);
+write(bvv);=======
 _aasdf srfss= 10;
+>>>>>>> .r30
