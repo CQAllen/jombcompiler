@@ -4,6 +4,7 @@ import cqut.lexicalAnalysis.Recog;
 import cqut.util.EncodeTable;
 import cqut.util.Token;
 import cqut.util.entity.Source;
+import cqut.util.entity.SymbolMeta;
 import cqut.util.entity.TokenMeta;
 
 /**
@@ -69,6 +70,7 @@ public class StringAnalysis implements Recog {
 
 		} else {
 			addIdentifier(temp.toString());
+			insertSymbol(temp.toString());
 			state = 1;// 还原状态，方便下次调用
 		}
 	}
@@ -95,9 +97,17 @@ public class StringAnalysis implements Recog {
 				state = 1;
 			} else {
 				addIdentifier(temp.toString());
+				insertSymbol(temp.toString());
 				state = 1;
 			}
 		}
+	}
+	private void insertSymbol(String Str_temp) {
+		// TODO Auto-generated method stub
+		SymbolMeta Cur=new SymbolMeta();
+		Cur.setMeta(Str_temp);
+		Cur.setPointer(35);
+		Cur.setKind("简单变量");
 	}
 
 	private void addIdentifier(String Str_temp) {
