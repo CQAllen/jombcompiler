@@ -45,6 +45,9 @@ public class StringAnalysis implements Recog {
 		}
 		case 2: {
 			isIdentifier(ch);
+			addIdentifier(temp.toString());
+			insertSymbol(temp.toString());
+			state = 1;// 还原状态，方便下次调用
 			break;
 		}
 		}
@@ -58,9 +61,12 @@ public class StringAnalysis implements Recog {
 
 	private void isIdentifier(Character ch) {// 包含下划线,不可能是关键字
 		// TODO Auto-generated method stub
+		System.out.println(ch!=' ');
 		if (ch != ' ' && ch != ';' && ch != '+' && ch != '-' && ch != '*'
 				&& ch != '/') {
+			  System.out.println("第一个if");
 			if (ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' || ch == '_') {
+				System.out.println("di yi g if");
 				temp.append(ch);
 				isIdentifier(Source.getInstance().getNextCharacter());
 			} else {
@@ -69,10 +75,12 @@ public class StringAnalysis implements Recog {
 			}
 
 		} else {
+			System.out.println("应该在这里");
 			addIdentifier(temp.toString());
 			insertSymbol(temp.toString());
 			state = 1;// 还原状态，方便下次调用
 		}
+
 	}
 
 	private void isKeyword(Character ch) {// 纯字母组成，有可能是关键字
