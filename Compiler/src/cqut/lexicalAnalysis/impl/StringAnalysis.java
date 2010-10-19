@@ -33,21 +33,22 @@ public class StringAnalysis implements Recog {
 	public void recog(Character ch) {
 		if (ch == '_')
 			state = 2;
+		// if (ch >= '0' && ch <= '9')
+		// state = 0;
 		switch (state) {
 		case 0: {
-			error("error:第" + Source.getInstance().getRow() + "行 第"
-					+ Source.getInstance().getColspan() + "列");
+			error("error:第" + (Source.getInstance().getRow() + 1) + "行 第"
+					+ (Source.getInstance().getColspan() + 1) + "列");
 			break;
 		}
 		case 1: {
 			isKeyword(ch);
+			// Source.getInstance().getNextCharacter();
 			break;
 		}
 		case 2: {
 			isIdentifier(ch);
-			addIdentifier(temp.toString());
-			insertSymbol(temp.toString());
-			state = 1;// 还原状态，方便下次调用
+			// Source.getInstance().getNextCharacter();
 			break;
 		}
 		}
@@ -61,42 +62,41 @@ public class StringAnalysis implements Recog {
 
 	private void isIdentifier(Character ch) {// 包含下划线,不可能是关键字
 		// TODO Auto-generated method stub
-		System.out.println(ch!=' ');
+		System.out.println(ch);
 		if (ch != ' ' && ch != ';' && ch != '+' && ch != '-' && ch != '*'
-				&& ch != '/') {
-			  System.out.println("第一个if");
-			if (ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' || ch == '_') {
-				System.out.println("di yi g if");
+				&& ch != '/' && ch != '=') {
+			if (ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' || ch == '_'
+					|| ch >= '0' && ch <= '9') {
 				temp.append(ch);
 				isIdentifier(Source.getInstance().getNextCharacter());
 			} else {
 				error("error:第" + Source.getInstance().getRow() + "行 第"
-						+ Source.getInstance().getColspan() + "列");
+						+ Source.getInstance().getColspan() + "列" + " :" + ch);
 			}
 
 		} else {
-			System.out.println("应该在这里");
 			addIdentifier(temp.toString());
 			insertSymbol(temp.toString());
 			state = 1;// 还原状态，方便下次调用
 		}
-
 	}
 
 	private void isKeyword(Character ch) {// 纯字母组成，有可能是关键字
 		// TODO Auto-generated method stub
+		System.out.println(ch);
 		if (ch != ' ' && ch != ';' && ch != '+' && ch != '-' && ch != '*'
-				&& ch != '/') {
+				&& ch != '/' && ch != '=') {
 			if (ch != '_' && (ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z')) {
 				temp.append(ch);
 				isKeyword(Source.getInstance().getNextCharacter());
-			} else if (ch == '_') {
+			} else if (ch == '_' || ch >= '0' && ch <= '9') {
 				state = 2;
 				isIdentifier(Source.getInstance().getNextCharacter());
 			} else {
 				temp = new StringBuffer();
-				error("error:第" + Source.getInstance().getRow() + "行 第"
-						+ Source.getInstance().getColspan() + "列");
+				error("error:第" + (Source.getInstance().getRow() + 1) + "行 第"
+						+ (Source.getInstance().getColspan() + 1) + "列" + " :"
+						+ ch);
 			}
 
 		} else {
@@ -110,9 +110,10 @@ public class StringAnalysis implements Recog {
 			}
 		}
 	}
+
 	private void insertSymbol(String Str_temp) {
 		// TODO Auto-generated method stub
-		SymbolMeta Cur=new SymbolMeta();
+		SymbolMeta Cur = new SymbolMeta();
 		Cur.setMeta(Str_temp);
 		Cur.setPointer(35);
 		Cur.setKind("简单变量");
