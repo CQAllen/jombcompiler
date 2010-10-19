@@ -1,11 +1,14 @@
 package cqut;
 
-import cqut.lexicalAnalysis.Recog;
-import cqut.lexicalAnalysis.impl.DigitAnalysis;
+import java.util.List;
+
+import cqut.util.entity.Source;
 
 public class Compiler {
-	Recog r = new DigitAnalysis();
-	public Compiler() {
-		System.out.println("asdf");
+	public static void main(String[] args) {
+		List<String> ll = Source.getInstance().getSource();
+		for (String s : ll) {
+			System.out.println(s);
+		}
 	}
 }
