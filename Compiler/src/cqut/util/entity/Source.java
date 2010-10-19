@@ -138,13 +138,22 @@ public class Source {
 		Recog recog = null;
 		Character ch = getCurrentCharacter();
 		String curr = ch.toString();
+		boolean flag = true;
+		while (flag) {
+			if (ch == ' ') {
+				ch = getNextCharacter();
+				curr = ch.toString();
+			} else {
+				flag = false;
+			}
+		}
 		if (curr.matches("\\d{1}")) {// 如果是数字
 			recog = new DigitAnalysis();
 		} else if (curr.matches("[a-zA-Z_]")) {// 如果是字目或者下划线
 			recog = StringAnalysis.getStringAnalysis();
 		} else if (curr.matches("["
 				+ EncodeTable.findCharactersByType(Token.ENCODETYPE_DELIMITER)
-				+ "]")) {// 如果是界符
+						.replaceAll("[\\[\\];]", "").concat("//]//[//;") + "]")) {// 如果是界符
 			recog = DelimiterAnalysis.getInstance();
 		} else if (ch == '/') {// 如果是反斜杠
 			recog = NoteOrDivsionAnalysis.getInstance();
