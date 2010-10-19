@@ -37,6 +37,7 @@ public class Source {
 
 	private static int row;
 	private static int colspan;
+	private static int max_colspan;
 
 	private static int MAX_LINE;// 源代码文件的行数
 
@@ -63,7 +64,9 @@ public class Source {
 			return null;
 		}
 		colspan = 0;// 转到开头
-		return sources.get(row++);
+		String s = sources.get(row++);
+		max_colspan = s.length();
+		return s;
 	}
 
 	/**
@@ -76,7 +79,9 @@ public class Source {
 			return null;
 		}
 		colspan = 0;// 转到开头
-		return sources.get(row--);
+		String s = sources.get(row--);
+		max_colspan = s.length();
+		return s;
 	}
 
 	/**
@@ -89,6 +94,7 @@ public class Source {
 		if (colspan == chars.length - 1) {// 当前字符已经是当前行最后一个
 			chars = sources.get(++row).toCharArray();
 			colspan = 0;
+			max_colspan = chars.length;
 			return chars[colspan];
 		}
 		return chars[++colspan];
@@ -104,6 +110,7 @@ public class Source {
 		if (colspan == 0) {// 当前字符已经是当前行第一个
 			chars = sources.get(--row).toCharArray();
 			colspan = chars.length - 1;
+			max_colspan = chars.length;
 			return chars[colspan];
 		}
 		return chars[--colspan];
@@ -136,6 +143,9 @@ public class Source {
 	}
 
 	public void sort() {
+		if (row == MAX_LINE && colspan == max_colspan) {// 源文件识别完毕
+			return;
+		}
 		Recog recog = null;
 		Character ch = getCurrentCharacter();
 		String curr = ch.toString();
