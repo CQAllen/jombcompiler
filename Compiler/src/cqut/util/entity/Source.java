@@ -6,6 +6,7 @@ import cqut.lexicalAnalysis.Recog;
 import cqut.lexicalAnalysis.impl.DelimiterAnalysis;
 import cqut.lexicalAnalysis.impl.DigitAnalysis;
 import cqut.lexicalAnalysis.impl.NoteOrDivsionAnalysis;
+import cqut.lexicalAnalysis.impl.OperaterAnalysis;
 import cqut.lexicalAnalysis.impl.StringAnalysis;
 import cqut.util.EncodeTable;
 import cqut.util.ReadFile;
@@ -138,6 +139,7 @@ public class Source {
 		Recog recog = null;
 		Character ch = getCurrentCharacter();
 		String curr = ch.toString();
+		System.out.println(curr);
 		boolean flag = true;
 		while (flag) {
 			if (ch == ' ') {
@@ -153,10 +155,15 @@ public class Source {
 			recog = StringAnalysis.getStringAnalysis();
 		} else if (curr.matches("["
 				+ EncodeTable.findCharactersByType(Token.ENCODETYPE_DELIMITER)
-						.replaceAll("[\\[\\];]", "").concat("//]//[//;") + "]")) {// 如果是界符
+						.replaceAll("[\\[\\]\\;]", "").concat("\\]\\[\\;")
+				+ "]")) {// 如果是界符
 			recog = DelimiterAnalysis.getInstance();
 		} else if (ch == '/') {// 如果是反斜杠
 			recog = NoteOrDivsionAnalysis.getInstance();
+		} else if (curr.matches("["
+				+ EncodeTable.findCharactersByType(Token.ENCODETYPE_OPERATER)
+				+ "]")) {
+			recog = OperaterAnalysis.getInstance();
 		}
 		recog.recog(ch);
 	}

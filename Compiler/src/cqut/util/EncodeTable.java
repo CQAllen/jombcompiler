@@ -48,7 +48,7 @@ public class EncodeTable {
 		case Token.ENCODETYPE_ID:
 			return find(35, 35);
 		case Token.ENCODETYPE_OPERATER:
-			return find(24, 34).replaceAll("[=<>/ ]", "") + "<=>";
+			return find(24, 34).replaceAll("[=<>/ \\*]", "") + "<=>*";
 		default:
 			return null;
 		}
@@ -70,7 +70,8 @@ public class EncodeTable {
 
 	public static void main(String[] args) {
 		String s = findCharactersByType(Token.ENCODETYPE_DELIMITER);
-		System.out.println(s);
-		System.out.println(s.replaceAll("[\\[\\];]", "").concat("//]//[//;"));
+		System.out.println(s.replaceAll("[\\[\\]\\;]", "").concat("\\]\\[\\;"));
+		System.out.println("=".matches("["
+				+ s.replaceAll("[\\[\\]\\;]", "").concat("\\]\\[\\;") + "]"));
 	}
 }
