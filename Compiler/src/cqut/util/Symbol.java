@@ -13,8 +13,24 @@ import cqut.util.entity.SymbolMeta;
  */
 public class Symbol {
 
-	private static Symbol symbol;
+	/**
+	 * 整型类型
+	 */
+	public static final String TYPE_INTEGER = "";// 整型类型
+	/**
+	 * 实型
+	 */
+	public static final String TYPE_FLOAT = "";// 实型
+	/**
+	 * 简单变量
+	 */
+	public static final String KIND_VAR = "简单变量";// 简单变量
+	/**
+	 * 数值
+	 */
+	public static final String KIND_NUM = "数值";// 数值
 
+	private static Symbol symbol;
 	private static List<SymbolMeta> symbols;
 
 	private Symbol() {
