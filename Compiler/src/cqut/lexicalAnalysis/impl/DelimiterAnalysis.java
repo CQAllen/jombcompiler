@@ -33,7 +33,7 @@ public class DelimiterAnalysis implements Recog{
 			switch(state){
 			case 1:Source.getInstance().getNextCharacter();Source.getInstance().sort();
 			case 0:
-				error(ch.toString());
+				error("界符类"+ch.toString());
 				Source.getInstance().getNextCharacter();
 				Source.getInstance().sort();
 		       } 
@@ -202,7 +202,7 @@ public class DelimiterAnalysis implements Recog{
 	@Override
 	public void error(String message) {
 		System.out.println(message+"出错");
-		System.out.println("第"+Source.getInstance().getRow()+"行"+Source.getInstance().getColspan()+"列出错");
+//		System.out.println("第"+Source.getInstance().getRow()+"行"+Source.getInstance().getColspan()+"列出错");
 		
 	}
 	
