@@ -31,11 +31,12 @@ public class DelimiterAnalysis implements Recog{
 
 			isDelimiter(ch);
 			switch(state){
-			case 1:Source.getInstance().sort();
+			case 1:Source.getInstance().getNextCharacter();Source.getInstance().sort();
 			case 0:
 				error(ch.toString());
+				Source.getInstance().getNextCharacter();
 				Source.getInstance().sort();
-		       }
+		       } 
 
 		}
 		
