@@ -69,6 +69,8 @@ public class EncodeTable {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(findCharactersByType(Token.ENCODETYPE_KEYWORD));
+		String s = findCharactersByType(Token.ENCODETYPE_DELIMITER);
+		System.out.println(s);
+		System.out.println(s.replaceAll("[\\[\\];]", "").concat("//]//[//;"));
 	}
 }
