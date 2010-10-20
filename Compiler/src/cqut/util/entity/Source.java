@@ -46,6 +46,7 @@ public class Source {
 		SystemProperty.readProperties();// 读取语言编码表
 		sources = ReadFile.read(ReadFile.sourcePath);// 读源文件
 		MAX_LINE = sources.size();
+		max_colspan = sources.get(0).length();
 		row = 0;
 		colspan = 0;
 	}
@@ -91,7 +92,7 @@ public class Source {
 	 */
 	public Character getNextCharacter() {
 		char[] chars = sources.get(row).toCharArray();
-		if (row == MAX_LINE - 1) {
+		if (row == MAX_LINE - 1 && colspan == max_colspan - 1) {
 			return null;
 		}
 		if (colspan == chars.length - 1) {// 当前字符已经是当前行最后一个
