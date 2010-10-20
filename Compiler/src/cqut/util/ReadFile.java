@@ -1,6 +1,7 @@
 package cqut.util;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -56,6 +57,26 @@ public class ReadFile {
 		FileWriter fw;
 		try {
 			fw = new FileWriter(currentPath);
+			fw.write(source);
+			fw.flush();
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void write(String path,String source) {
+		File f = new File(path);
+		if(!f.exists()){
+			try {
+				f.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		FileWriter fw;
+		try {
+			fw = new FileWriter(path);
 			fw.write(source);
 			fw.flush();
 			fw.close();

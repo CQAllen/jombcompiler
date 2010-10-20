@@ -1,5 +1,6 @@
 package cqut.gui.customcontrol;
 
+import java.io.File;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -7,6 +8,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
@@ -230,6 +232,36 @@ public class JomMenu extends Menu {
 	}
 
 	private void addFileListener() {
+		saveAsItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				FileDialog saveDialog = new FileDialog(Display.getCurrent()
+						.getActiveShell(), SWT.SAVE);
+				saveDialog
+						.setFilterExtensions(new String[] { "*.jom;", "*.*" });
+				saveDialog.setFilterNames(new String[] { "Jom源文件 (*.jom)",
+						"All Files " });
+				String name = saveDialog.getFileName();
+				String path = saveDialog.open();
+				if (name.equals("")) {// 如果未填写名称，则无任何事件
+					return;
+				}
+				if (name.indexOf(".jom") != name.length() - 4) {// 如果未写入后缀名，自动添加上后缀名
+					name += ".jom";
+				}
+				File file = new File(saveDialog.getFilterPath(), name);
+				if (file.exists()) {// 如果文件已存在，则提示覆盖
+					int open = SWTUtil.showMessageBox(Display.getCurrent()
+							.getActiveShell(), "警告", "文件 " + file.getName()
+							+ " 已存在,是否要覆盖该文件？", SWT.ICON_WARNING | SWT.YES
+							| SWT.NO);
+					if (open != SWT.YES) {
+						return;
+					}
+				}
+				ReadFile.write(path, Window.highlightText.getText());
+			}
+		});
 		exitItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -267,6 +299,7 @@ public class JomMenu extends Menu {
 
 					currentShell.setCursor(null);// 设置鼠标正常
 					waitCursor.dispose();
+					openItem.setEnabled(false);
 				}
 			}
 		});
