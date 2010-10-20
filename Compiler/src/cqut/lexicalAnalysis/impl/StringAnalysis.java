@@ -2,6 +2,7 @@ package cqut.lexicalAnalysis.impl;
 
 import cqut.lexicalAnalysis.Recog;
 import cqut.util.EncodeTable;
+import cqut.util.Symbol;
 import cqut.util.Token;
 import cqut.util.entity.Source;
 import cqut.util.entity.SymbolMeta;
@@ -33,8 +34,6 @@ public class StringAnalysis implements Recog {
 	public void recog(Character ch) {
 		if (ch == '_')
 			state = 2;
-		// if (ch >= '0' && ch <= '9')
-		// state = 0;
 		switch (state) {
 		case 0: {
 			error("error:第" + (Source.getInstance().getRow() + 1) + "行 第"
@@ -43,12 +42,10 @@ public class StringAnalysis implements Recog {
 		}
 		case 1: {
 			isKeyword(ch);
-			// Source.getInstance().getNextCharacter();
 			break;
 		}
 		case 2: {
 			isIdentifier(ch);
-			// Source.getInstance().getNextCharacter();
 			break;
 		}
 		}
@@ -64,7 +61,8 @@ public class StringAnalysis implements Recog {
 		// TODO Auto-generated method stub
 		System.out.println(ch);
 		if (ch != ' ' && ch != ';' && ch != '+' && ch != '-' && ch != '*'
-				&& ch != '/' && ch != '=') {
+				&& ch != '/' && ch != '=' && ch != '(' && ch != ')'
+				&& ch != '[' && ch != ']') {
 			if (ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' || ch == '_'
 					|| ch >= '0' && ch <= '9') {
 				temp.append(ch);
@@ -78,6 +76,7 @@ public class StringAnalysis implements Recog {
 			addIdentifier(temp.toString());
 			insertSymbol(temp.toString());
 			state = 1;// 还原状态，方便下次调用
+			temp = new StringBuffer();// 清空字符缓存
 		}
 	}
 
@@ -85,7 +84,8 @@ public class StringAnalysis implements Recog {
 		// TODO Auto-generated method stub
 		System.out.println(ch);
 		if (ch != ' ' && ch != ';' && ch != '+' && ch != '-' && ch != '*'
-				&& ch != '/' && ch != '=') {
+				&& ch != '/' && ch != '=' && ch != '(' && ch != ')'
+				&& ch != '[' && ch != ']') {
 			if (ch != '_' && (ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z')) {
 				temp.append(ch);
 				isKeyword(Source.getInstance().getNextCharacter());
@@ -103,20 +103,25 @@ public class StringAnalysis implements Recog {
 			if (EncodeTable.search(temp.toString()) != 0) {
 				addKeyword(temp.toString());
 				state = 1;
+				temp = new StringBuffer();// 清空字符缓存
 			} else {
 				addIdentifier(temp.toString());
 				insertSymbol(temp.toString());
 				state = 1;
+				temp = new StringBuffer();// 清空字符缓存
 			}
 		}
 	}
 
 	private void insertSymbol(String Str_temp) {
 		// TODO Auto-generated method stub
+//		Symbol.getInstance().getSymbol()
 		SymbolMeta Cur = new SymbolMeta();
 		Cur.setMeta(Str_temp);
 		Cur.setPointer(35);
-		Cur.setKind("简单变量");
+		Cur.setKind(Symbol.KIND_VAR);
+		Symbol.getInstance().getSymbol().add(Cur);
+
 	}
 
 	private void addIdentifier(String Str_temp) {
@@ -126,7 +131,6 @@ public class StringAnalysis implements Recog {
 		Cur.setMeta(Str_temp);
 		Cur.setPointer(35);
 		Token.getTokenTable().add(Cur);
-		temp = new StringBuffer();// 清空字符缓存
 	}
 
 	private void addKeyword(String Str_temp) {
@@ -137,7 +141,6 @@ public class StringAnalysis implements Recog {
 		Cur.setMeta(Str_temp);
 		Cur.setPointer(Cur_pointer);
 		Token.getTokenTable().add(Cur);
-		temp = new StringBuffer();// 清空字符缓存
 	}
 
 }
