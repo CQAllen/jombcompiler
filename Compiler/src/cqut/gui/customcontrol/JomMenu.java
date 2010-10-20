@@ -230,6 +230,13 @@ public class JomMenu extends Menu {
 	}
 
 	private void addFileListener() {
+		exitItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				Display.getCurrent().getActiveShell().dispose();
+				Display.getCurrent().dispose();
+			}
+		});
 		saveItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
