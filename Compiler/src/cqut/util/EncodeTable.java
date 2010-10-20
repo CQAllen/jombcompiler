@@ -69,9 +69,6 @@ public class EncodeTable {
 	}
 
 	public static void main(String[] args) {
-		String s = findCharactersByType(Token.ENCODETYPE_DELIMITER);
-		System.out.println(s.replaceAll("[\\[\\]\\;]", "").concat("\\]\\[\\;"));
-		System.out.println("=".matches("["
-				+ s.replaceAll("[\\[\\]\\;]", "").concat("\\]\\[\\;") + "]"));
+		System.out.println('/'=='/');
 	}
 }
