@@ -179,7 +179,11 @@ public class Source {
 		Recog recog = null;
 		Character ch = getCurrentCharacter();
 		String curr = ch.toString();
+
+		System.out.println("from Source: "+curr);
+
 		System.out.println("读到了一个" + curr + "啊");
+
 		boolean flag = true;
 		while (flag) {
 			if (ch == ' ' || ch == '	') {
