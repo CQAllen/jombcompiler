@@ -35,11 +35,11 @@ public class DigitAnalysis implements Recog {
 				if (isDigit(next)) {state = 1;} 
 				else if (next == 'e' || next == 'E') {state = 4;} 
 				else if (next == '.') {state = 2;flag=false;} 
-				else {state = 7;}
+				else {state = 7;error("无法识别字符 " + next);}
 				break;
 			case 2:
 				if (isDigit(next)) {state = 3;}
-				else {state = 7;error("无法识别字符" + next);}
+				else {state = 7;error("无法识别字符 " + next);}
 				break;
 			case 3:
 				if (isDigit(next)) {state = 3;} 
