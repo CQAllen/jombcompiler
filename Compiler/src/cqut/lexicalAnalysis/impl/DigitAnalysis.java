@@ -24,6 +24,9 @@ public class DigitAnalysis implements Recog {
 		boolean flag = true;
 		int state = 0;
 		while (state != 7) {
+			if(Source.getInstance().isLastCharacter()){
+				return;
+			}
 			char next = Source.getInstance().getNextCharacter();
 			switch (state) {
 			case 0:
