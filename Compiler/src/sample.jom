@@ -1,11 +1,13 @@
+//this is jom program
 integer aasdf = 10;
 float a = 10.4;
 void main{
 	do{
+		float h = 0.6;
 		char b='a';
 		aasdf=aasdf+1;
 		if(aasdf==15){
 			write(a/aasdf);
-		}	
+		}
 	}while(aasdf==20)
 }

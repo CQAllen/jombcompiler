@@ -186,7 +186,7 @@ public class Source {
 
 		boolean flag = true;
 		while (flag) {
-			if (ch == ' ' || ch == '	') {
+			if (ch == ' ' || ch == '	'|| ch == '\n') {
 				ch = getNextCharacter();
 				curr = ch.toString();
 			} else {

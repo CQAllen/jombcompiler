@@ -22,7 +22,7 @@ public class EncodeTable {
 	}
 
 	public static Integer search(String s) {
-		for (int i = 0; i < 52; i++) {
+		for (int i = 0; i < 53; i++) {
 			if (s.equals(encodeTable.get(i + ""))) {
 				return i;
 			}
@@ -44,7 +44,7 @@ public class EncodeTable {
 		case Token.ENCODETYPE_CONSTANT:
 			return find(36, 39);
 		case Token.ENCODETYPE_DELIMITER:
-			return find(40, 52).replaceAll("[\\* /]", "");
+			return find(40, 53).replaceAll("[\\* /]", "");
 		case Token.ENCODETYPE_ID:
 			return find(35, 35);
 		case Token.ENCODETYPE_OPERATER:
