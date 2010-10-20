@@ -44,7 +44,7 @@ public class EncodeTable {
 		case Token.ENCODETYPE_CONSTANT:
 			return find(36, 39);
 		case Token.ENCODETYPE_DELIMITER:
-			return find(40, 52).replaceAll("[\\* ]", "").replaceFirst("/", "");
+			return find(40, 52).replaceAll("[\\* /]", "");
 		case Token.ENCODETYPE_ID:
 			return find(35, 35);
 		case Token.ENCODETYPE_OPERATER:
@@ -69,6 +69,6 @@ public class EncodeTable {
 	}
 
 	public static void main(String[] args) {
-		System.out.println('/'=='/');
+		System.out.println(findCharactersByType(Token.ENCODETYPE_DELIMITER));
 	}
 }
