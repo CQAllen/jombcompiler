@@ -3,6 +3,7 @@ package cqut.lexicalAnalysis.impl;
 import cqut.lexicalAnalysis.Recog;
 import cqut.util.EncodeTable;
 import cqut.util.Token;
+import cqut.util.entity.ErrorFacade;
 import cqut.util.entity.Source;
 import cqut.util.entity.TokenMeta;
 
@@ -12,7 +13,7 @@ import cqut.util.entity.TokenMeta;
  */
 public class OperaterAnalysis implements Recog{
 	
-    int state=1;
+    
     NoteOrDivsionAnalysis noteOrDivsionAnalysis = new NoteOrDivsionAnalysis();
     private static OperaterAnalysis o;
     
@@ -25,37 +26,47 @@ public class OperaterAnalysis implements Recog{
     	return o;
     }
 
-
+    int state=1;
 	@Override
 	public void recog(Character ch) {
-
+		   
 			isOperater(ch);
+			System.out.println("state="+state);
 			switch(state){
-			case 1:                    //给当前字符已经读出的方法调用服务
-				
-			       Source.getInstance().sort();
+			
+		
 			case 0:                     //给当前字符已经读出的方法调用服务
-				error("运算符类"+ch.toString());
-				Source.getInstance().sort();
+//				error("运算符类"+ch.toString());
+				Source.getInstance().sort();	
+				break;
+				
+			case 1:                    //给当前字符已经读出的方法调用服务
+				 Source.getInstance().sort();
+				 break;
+			
 			case 2:  
 				if(Source.getInstance().isLastCharacter()){
 					return ;
 				}//给当前字符已经被保存，需要读出下一个字符的方法使用
+				System.out.println("进这里来了");
 				Source.getInstance().getNextCharacter();
 		        Source.getInstance().sort();
+		        break;
 		    case 3:
 		    	if(Source.getInstance().isLastCharacter()){
 					return ;
 				}
 		    	Source.getInstance().getNextCharacter();
 			
-			    error("运算符类"+ch.toString());
+//			    error("运算符类"+ch.toString());
 			    Source.getInstance().sort();
+			    break;
 
 		       }	
 	}
 	
 	public  boolean isOperater(Character c){
+		
 		TokenMeta tokenMeta;
 		switch(c){
 		case '+':
@@ -82,7 +93,7 @@ public class OperaterAnalysis implements Recog{
             Token.getTokenTable().add(tokenMeta);
             state=2;
 			return true;
-//		case '/':if(noteOrDivsionAnalysis.isDivsion(c)){return true;}else return false;
+
 		case '<':if(Source.getInstance().getNextCharacter().equals('='))
 		           {
 			tokenMeta=new TokenMeta();
@@ -126,12 +137,12 @@ public class OperaterAnalysis implements Recog{
 			            tokenMeta.setMeta(">");
 			            tokenMeta.setPointer(EncodeTable.search(">"));
 			            Token.getTokenTable().add(tokenMeta);
-//			        	Source.getInstance().getLastCharacter();//用来回退
+
 			        	}
 		               return true;
           
 		case '=':	
-	if(Source.getInstance().isLastCharacter()){
+	         if(Source.getInstance().isLastCharacter()){
 				
 			 	tokenMeta=new TokenMeta();
             tokenMeta.setLine(Source.getInstance().getRow());
@@ -161,6 +172,7 @@ public class OperaterAnalysis implements Recog{
 	           
 		
 		case '!':
+		  {
 	    
 			if(Source.getInstance().isLastCharacter()){
 			
@@ -176,12 +188,13 @@ public class OperaterAnalysis implements Recog{
                  return true;
 		        }else{
 		        	state=0;
+		        	ErrorFacade.getInstance().addError(Source.getInstance().getRow(), c.toString());
 		        	return false;
 		        }
 		}
 		
 		
-		
+		}
 			
 		return false;
 	}
