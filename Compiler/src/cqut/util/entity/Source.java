@@ -208,6 +208,12 @@ public class Source {
 				+ EncodeTable.findCharactersByType(Token.ENCODETYPE_OPERATER)
 				+ "]")) {
 			recog = OperaterAnalysis.getInstance();
+		} else {
+			ErrorFacade.getInstance().addError(row,
+					"无法识别字符: '" + getCurrentCharacter() + "'");
+			getNextCharacter();
+			sort();
+			return;
 		}
 		System.out.println("交给了" + recog + "啊");
 		recog.recog(ch);
