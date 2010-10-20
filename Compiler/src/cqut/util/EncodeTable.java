@@ -69,6 +69,6 @@ public class EncodeTable {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(findCharactersByType(Token.ENCODETYPE_DELIMITER));
+		System.out.println(findCharactersByType(Token.ENCODETYPE_OPERATER));
 	}
 }

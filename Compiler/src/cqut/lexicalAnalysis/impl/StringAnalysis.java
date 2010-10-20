@@ -60,26 +60,28 @@ public class StringAnalysis implements Recog {
 	private void isIdentifier(Character ch) {// 包含下划线,不可能是关键字
 		// TODO Auto-generated method stub
 		System.out.println(ch);
-		if (ch != ' ' && ch != ';' && ch != '+' && ch != '-' && ch != '*'
-				&& ch != '/' && ch != '=' && ch != '(' && ch != ')'
-				&& ch != '[' && ch != ']') {
-			if (ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' || ch == '_'
-					|| ch >= '0' && ch <= '9') {
-				temp.append(ch);
-				if (Source.getInstance().isLastCharacter()) {
-					addIdentifier(temp.toString());
-					insertSymbol(temp.toString());
-					state = 1;
-					temp = new StringBuffer();// 清空字符缓存
-					return;
-				}
-				isIdentifier(Source.getInstance().getNextCharacter());
-			} else {
-				error("error:第" + Source.getInstance().getRow() + "行 第"
-						+ Source.getInstance().getColspan() + "列" + " :" + ch);
+		// if (ch != ' ' && ch != ';' && ch != '+' && ch != '-' && ch != '*'
+		// && ch != '/' && ch != '=' && ch != '(' && ch != ')'
+		// && ch != '[' && ch != ']') {
+		if (ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' || ch == '_'
+				|| ch >= '0' && ch <= '9') {
+			temp.append(ch);
+			if (Source.getInstance().isLastCharacter()) {
+				addIdentifier(temp.toString());
+				insertSymbol(temp.toString());
+				state = 1;
+				temp = new StringBuffer();// 清空字符缓存
+				return;
 			}
+			isIdentifier(Source.getInstance().getNextCharacter());
+		}
+		// else {
+		// error("error:第" + Source.getInstance().getRow() + "行 第"
+		// + Source.getInstance().getColspan() + "列" + " :" + ch);
+		// }
 
-		} else {
+		// }
+		else {
 			addIdentifier(temp.toString());
 			insertSymbol(temp.toString());
 			state = 1;// 还原状态，方便下次调用
@@ -90,9 +92,9 @@ public class StringAnalysis implements Recog {
 	private void isKeyword(Character ch) {// 纯字母组成，有可能是关键字
 		// TODO Auto-generated method stub
 		System.out.println(ch);
-		if (ch != ' ' && ch != ';' && ch != '+' && ch != '-' && ch != '*'
-				&& ch != '/' && ch != '=' && ch != '(' && ch != ')'
-				&& ch != '[' && ch != ']') {
+//		if (ch != ' ' && ch != ';' && ch != '+' && ch != '-' && ch != '*'
+//				&& ch != '/' && ch != '=' && ch != '(' && ch != ')'
+//				&& ch != '[' && ch != ']') {
 			if (ch != '_' && (ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z')) {
 				temp.append(ch);
 				if (Source.getInstance().isLastCharacter()) {
@@ -112,14 +114,16 @@ public class StringAnalysis implements Recog {
 			} else if (ch == '_' || ch >= '0' && ch <= '9') {
 				state = 2;
 				isIdentifier(Source.getInstance().getNextCharacter());
-			} else {
-				temp = new StringBuffer();
-				error("error:第" + (Source.getInstance().getRow() + 1) + "行 第"
-						+ (Source.getInstance().getColspan() + 1) + "列" + " :"
-						+ ch);
-			}
+			} 
+//			else {
+//				temp = new StringBuffer();
+//				error("error:第" + (Source.getInstance().getRow() + 1) + "行 第"
+//						+ (Source.getInstance().getColspan() + 1) + "列" + " :"
+//						+ ch);
+//			}
 
-		} else {
+//		} 
+			else {
 			if (EncodeTable.search(temp.toString()) != 0) {
 				addKeyword(temp.toString());
 				state = 1;
