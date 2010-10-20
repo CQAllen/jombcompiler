@@ -22,6 +22,7 @@ import cqut.util.Token;
 public class Source {
 
 	private static Source sourceCode;
+	private static String filepath;
 
 	private Source() {
 	}
@@ -29,6 +30,13 @@ public class Source {
 	public static Source getInstance() {
 		if (sourceCode == null) {
 			init();
+		}
+		return sourceCode;
+	}
+
+	public static Source getInstance(String filepath) {
+		if (sourceCode == null) {
+			init(filepath);
 		}
 		return sourceCode;
 	}
@@ -41,14 +49,18 @@ public class Source {
 
 	private static int MAX_LINE;// 源代码文件的行数
 
-	private static void init() {
+	private static void init(String filepath) {
 		sourceCode = new Source();
 		SystemProperty.readProperties();// 读取语言编码表
-		sources = ReadFile.read(ReadFile.sourcePath);// 读源文件
+		sources = ReadFile.read(filepath);// 读源文件
 		MAX_LINE = sources.size();
 		max_colspan = sources.get(0).length();
 		row = 0;
 		colspan = 0;
+	}
+
+	private static void init() {
+		init(ReadFile.sourcePath);
 	}
 
 	public List<String> getSource() {
@@ -164,7 +176,7 @@ public class Source {
 		System.out.println("读到了一个" + curr + "啊");
 		boolean flag = true;
 		while (flag) {
-			if (ch == ' ') {
+			if (ch == ' '||ch =='	') {
 				ch = getNextCharacter();
 				curr = ch.toString();
 			} else {
