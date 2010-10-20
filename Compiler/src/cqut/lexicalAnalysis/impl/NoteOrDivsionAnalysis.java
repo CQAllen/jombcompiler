@@ -22,6 +22,7 @@ public class NoteOrDivsionAnalysis implements Recog {
     	n=new NoteOrDivsionAnalysis();
     }
     public static NoteOrDivsionAnalysis getInstance(){
+    	
     	return n;
     }
 
@@ -29,28 +30,39 @@ public class NoteOrDivsionAnalysis implements Recog {
 	public void recog(Character ch) {
 			isDivsion(ch);
 			switch(state){
-			case 1:Source.getInstance().getNextCharacter();
+			case 1://Source.getInstance().getNextCharacter();
+				  
 			       Source.getInstance().sort();
 			case 0:
 				error("注释或者除号类"+ch.toString());
-				//这里需要一个returnBackTo();方法来回退到原来注释开始的地方,语法阶段
+				
+				if(Source.getInstance().isLastCharacter()){
+					return ;
+				}
 				Source.getInstance().getNextCharacter();
 			    Source.getInstance().sort();
 		       }
 	
 	}
 	public boolean isDivsion(Character ch){
+		System.out.println("处理/的方法");
 		TokenMeta tokenMeata;
-		if(Source.getInstance().getNextCharacter().equals('/')){
+		if(Source.getInstance().isLastCharacter()){
+			return true;
+		}
+		Character c=Source.getInstance().getNextCharacter();
+		
+		if(c.equals('/')){
+			
 			 tokenMeata=new TokenMeta();
 			tokenMeata.setLine(Source.getInstance().getRow());
 			tokenMeata.setMeta("//");
 			tokenMeata.setPointer(EncodeTable.search("//"));
 			Token.getTokenTable().add(tokenMeata);
-            sigenlineNote();
-            return false;
-		}
-		else if(Source.getInstance().getNextCharacter().equals('*')){
+            return sigenlineNote();
+            
+       }
+		else if(c.equals('*')){
 			tokenMeata=new TokenMeta();
 			tokenMeata.setLine(Source.getInstance().getRow());
 			tokenMeata.setMeta("/*");
@@ -82,12 +94,16 @@ public class NoteOrDivsionAnalysis implements Recog {
 
 	private boolean sigenlineNote(){//����ע��
 		while(true){
-			if(Source.getInstance().getNextCharacter().equals('\n')){ //һֱ��ȡ���ļ��Ļ��з��������ע�ͽ���
+			if(Source.getInstance().isLastCharacter()){
+				   return true;
+			   }
+			Character c=Source.getInstance().getNextCharacter();
+			if(c.equals('\n')){ 
 				break;
 			 }
 			}
 			
-			return false;//���ǳ�žͻ���false
+			return true;
 			
 	}
 	
@@ -96,6 +112,9 @@ public class NoteOrDivsionAnalysis implements Recog {
 	private boolean doubleNote(){ //����ע��
 		 currentRow= Source.getInstance().getRow();
 		while(true){
+			if(Source.getInstance().isLastCharacter()){
+				   return true;
+			   }
 			Character c= Source.getInstance().getNextCharacter();
 			Character c2=null;
 			if(c==null){
@@ -104,6 +123,9 @@ public class NoteOrDivsionAnalysis implements Recog {
 			}
 				
 			if(c=='*'){
+				if(Source.getInstance().isLastCharacter()){
+					   return true;
+				   }
 				c2=Source.getInstance().getNextCharacter();
 				if(c2=='/'){
 					return true;//放回过后，需要从下一个字符开始读取

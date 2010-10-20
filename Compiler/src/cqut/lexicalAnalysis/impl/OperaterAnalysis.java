@@ -32,15 +32,23 @@ public class OperaterAnalysis implements Recog{
 			isOperater(ch);
 			switch(state){
 			case 1:                    //给当前字符已经读出的方法调用服务
+				
 			       Source.getInstance().sort();
 			case 0:                     //给当前字符已经读出的方法调用服务
 				error("运算符类"+ch.toString());
 				Source.getInstance().sort();
-			case 2:                    //给当前字符已经被保存，需要读出下一个字符的方法使用
+			case 2:  
+				if(Source.getInstance().isLastCharacter()){
+					return ;
+				}//给当前字符已经被保存，需要读出下一个字符的方法使用
 				Source.getInstance().getNextCharacter();
 		        Source.getInstance().sort();
 		    case 3:
-			    Source.getInstance().getNextCharacter();
+		    	if(Source.getInstance().isLastCharacter()){
+					return ;
+				}
+		    	Source.getInstance().getNextCharacter();
+			
 			    error("运算符类"+ch.toString());
 			    Source.getInstance().sort();
 
@@ -94,8 +102,16 @@ public class OperaterAnalysis implements Recog{
 			        	}
 		           return true;
 		case '>':
-			
-			if(Source.getInstance().getNextCharacter().equals('='))
+			if(Source.getInstance().isLastCharacter()){
+				
+			 	tokenMeta=new TokenMeta();
+            tokenMeta.setLine(Source.getInstance().getRow());
+            tokenMeta.setMeta(">");
+            tokenMeta.setPointer(EncodeTable.search(">"));
+            Token.getTokenTable().add(tokenMeta);
+				return true;
+			}
+		  if(Source.getInstance().getNextCharacter().equals('='))
 		           {
 			tokenMeta=new TokenMeta();
             tokenMeta.setLine(Source.getInstance().getRow());
@@ -115,7 +131,15 @@ public class OperaterAnalysis implements Recog{
 		               return true;
           
 		case '=':	
-			
+	if(Source.getInstance().isLastCharacter()){
+				
+			 	tokenMeta=new TokenMeta();
+            tokenMeta.setLine(Source.getInstance().getRow());
+            tokenMeta.setMeta("=");
+            tokenMeta.setPointer(EncodeTable.search("="));
+            Token.getTokenTable().add(tokenMeta);
+				return true;
+			}
 			if(Source.getInstance().getNextCharacter().equals('='))
 	           {
 		             tokenMeta=new TokenMeta();
@@ -137,6 +161,11 @@ public class OperaterAnalysis implements Recog{
 	           
 		
 		case '!':
+	    
+			if(Source.getInstance().isLastCharacter()){
+			
+				return false;
+			}
 			if(Source.getInstance().getNextCharacter().equals('='))
 	           {
 		         tokenMeta=new TokenMeta();

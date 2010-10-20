@@ -31,10 +31,22 @@ public class DelimiterAnalysis implements Recog{
 
 			isDelimiter(ch);
 			switch(state){
-			case 1:Source.getInstance().getNextCharacter();Source.getInstance().sort();
-			case 0:
-				error("界符类"+ch.toString());
+			case 1:
+				if(Source.getInstance().isLastCharacter()){
+					return;
+				}
 				Source.getInstance().getNextCharacter();
+				   
+			   Source.getInstance().sort();
+			case 0:
+				
+				error("界符类"+ch.toString());
+				System.out.println(Source.getInstance().isLastCharacter());
+				if(Source.getInstance().isLastCharacter()){
+					
+					return;
+				}
+				System.out.println(Source.getInstance().getNextCharacter());
 				Source.getInstance().sort();
 		       } 
 
