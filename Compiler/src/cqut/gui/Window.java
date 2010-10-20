@@ -2,12 +2,9 @@ package cqut.gui;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -35,28 +32,13 @@ public class Window {
 	private void config() {
 		shell.setImage(SWTUtil.getImageFromResorce("../images/shell.png"));
 		shell.setSize(800, 600);
-		shell.setLocation(setLocation());
+		shell.setLocation(SWTUtil.setLocation(display, shell));
 		shell.setText("Jom编译器");
 		shell.setLayout(new FillLayout());
 		shell.setMenuBar(new JomMenu(shell, SWT.BAR));
 		createContent();
 		shell.open();
 		close();
-	}
-
-	/**
-	 * 计算使shell显示在屏幕中间的坐标
-	 * 
-	 * @return Point
-	 */
-	private Point setLocation() {
-		Monitor primary = display.getPrimaryMonitor();// 获取监视器类
-		Rectangle bounds = primary.getBounds();// 得到监视器分辨率
-		Rectangle rect = shell.getBounds();// 得到shell的分辨率
-		// 计算使shell位于监视器中间的坐标
-		int x = bounds.x + (bounds.width - rect.width) / 2;
-		int y = bounds.y + (bounds.height - rect.height) / 2;
-		return new Point(x, y);
 	}
 
 	private void close() {

@@ -16,11 +16,11 @@ public class Symbol {
 	/**
 	 * 整型类型
 	 */
-	public static final String TYPE_INTEGER = "";// 整型类型
+	public static final String TYPE_INTEGER = "整型";// 整型类型
 	/**
 	 * 实型
 	 */
-	public static final String TYPE_FLOAT = "";// 实型
+	public static final String TYPE_FLOAT = "实型";// 实型
 	/**
 	 * 简单变量
 	 */
@@ -52,5 +52,9 @@ public class Symbol {
 
 	public void insert(SymbolMeta meta) {
 		symbols.add(meta);
+	}
+	
+	public void clear(){
+		symbols.clear();
 	}
 }

@@ -166,6 +166,12 @@ public class Source {
 		return row == MAX_LINE - 1;
 	}
 
+	public Source back() {
+		row = 0;
+		colspan = 0;
+		return sourceCode;
+	}
+
 	public void sort() {
 		if (isLastCharacter()) {// 源文件识别完毕
 			return;
@@ -176,7 +182,7 @@ public class Source {
 		System.out.println("读到了一个" + curr + "啊");
 		boolean flag = true;
 		while (flag) {
-			if (ch == ' '||ch =='	') {
+			if (ch == ' ' || ch == '	') {
 				ch = getNextCharacter();
 				curr = ch.toString();
 			} else {

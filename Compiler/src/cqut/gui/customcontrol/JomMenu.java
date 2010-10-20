@@ -209,7 +209,8 @@ public class JomMenu extends Menu {
 		check.setMenu(checkMenu);
 
 		checkItem = new MenuItem(checkMenu, SWT.PUSH);
-		checkItem.setText("查看");
+		checkItem.setText("查看错误信息");
+		checkItem.setEnabled(false);
 	}
 
 	private void help(Shell shell) {
@@ -242,7 +243,7 @@ public class JomMenu extends Menu {
 							SWT.CURSOR_WAIT);
 					currentShell.setCursor(waitCursor);// 设置鼠标忙
 
-					currentShell.setText(currentShell.getText() + " --" + name);
+					currentShell.setText("Jom编译器 --" + name);
 					StringBuffer sb = new StringBuffer();
 					for (String s : Source.getInstance(name).getSource()) {
 						sb.append(s + "\n");
@@ -253,6 +254,11 @@ public class JomMenu extends Menu {
 					currentShell.setCursor(null);// 设置鼠标正常
 					waitCursor.dispose();
 				}
+//				Token.getTokenTable().clear();
+//				Symbol.getInstance().clear();
+//				System.out.println("--------------"+Token.getTokenTable().size());
+//				Window.symbol.clearAll();
+//				Window.token.clearAll();
 			}
 		});
 	}
@@ -265,8 +271,9 @@ public class JomMenu extends Menu {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				System.out.println("lexicalItem");
-				Source.getInstance().sort();
+				Source.getInstance().back().sort();
 				List<TokenMeta> tokenMeta = Token.getTokenTable();
+				System.out.println("++++++++++++++++++++"+tokenMeta.size());
 				for (TokenMeta t : tokenMeta) {
 					new TableItem(Window.token, SWT.CENTER)
 							.setText(new String[] { t.getMeta(),
@@ -279,6 +286,7 @@ public class JomMenu extends Menu {
 									t.getType() + "", t.getValue() + "",
 									t.getPointer() + "", t.getKind() + "" });
 				}
+				checkItem.setEnabled(true);
 			}
 		});
 	}
@@ -293,6 +301,13 @@ public class JomMenu extends Menu {
 	}
 
 	private void addCheckListener() {
+		checkItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				new ErrorDialog(Display.getCurrent().getActiveShell(), SWT.NONE)
+						.open();
+			}
+		});
 	}
 
 	private void addHelpListener() {
