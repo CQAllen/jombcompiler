@@ -66,6 +66,13 @@ public class StringAnalysis implements Recog {
 			if (ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' || ch == '_'
 					|| ch >= '0' && ch <= '9') {
 				temp.append(ch);
+				if (Source.getInstance().isLastCharacter()) {
+					addIdentifier(temp.toString());
+					insertSymbol(temp.toString());
+					state = 1;
+					temp = new StringBuffer();// 清空字符缓存
+					return;
+				}
 				isIdentifier(Source.getInstance().getNextCharacter());
 			} else {
 				error("error:第" + Source.getInstance().getRow() + "行 第"
@@ -88,7 +95,20 @@ public class StringAnalysis implements Recog {
 				&& ch != '[' && ch != ']') {
 			if (ch != '_' && (ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z')) {
 				temp.append(ch);
-				isKeyword(Source.getInstance().getNextCharacter());
+				if (Source.getInstance().isLastCharacter()) {
+					if (EncodeTable.search(temp.toString()) != 0) {
+						addKeyword(temp.toString());
+						state = 1;
+						temp = new StringBuffer();// 清空字符缓存
+					} else {
+						addIdentifier(temp.toString());
+						insertSymbol(temp.toString());
+						state = 1;
+						temp = new StringBuffer();// 清空字符缓存
+					}
+					return;
+				} else
+					isKeyword(Source.getInstance().getNextCharacter());
 			} else if (ch == '_' || ch >= '0' && ch <= '9') {
 				state = 2;
 				isIdentifier(Source.getInstance().getNextCharacter());
@@ -115,7 +135,7 @@ public class StringAnalysis implements Recog {
 
 	private void insertSymbol(String Str_temp) {
 		// TODO Auto-generated method stub
-//		Symbol.getInstance().getSymbol()
+		// Symbol.getInstance().getSymbol()
 		SymbolMeta Cur = new SymbolMeta();
 		Cur.setMeta(Str_temp);
 		Cur.setPointer(35);
