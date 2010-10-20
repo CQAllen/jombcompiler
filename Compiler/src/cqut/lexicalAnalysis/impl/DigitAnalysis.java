@@ -49,7 +49,7 @@ public class DigitAnalysis implements Recog {
 			case 4:
 				if (next == '-' || next == '+') {state = 5;} 
 				else if (isDigit(next)) {state = 6;} 
-				else {state = 7;error("无法识别字符" + next);}
+				else {state = 7;error("无法识别字符 '" + next+"'");}
 				break;
 			case 5:
 				if (isDigit(next)) {state = 6;} 
