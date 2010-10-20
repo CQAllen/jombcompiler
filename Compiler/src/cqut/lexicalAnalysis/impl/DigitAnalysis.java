@@ -12,7 +12,7 @@ public class DigitAnalysis implements Recog {
 
 	@Override
 	public void error(String message) {
-		System.out.println(message);
+//		System.out.println(message);
 	}
 
 	@Override

@@ -91,6 +91,9 @@ public class Source {
 	 */
 	public Character getNextCharacter() {
 		char[] chars = sources.get(row).toCharArray();
+		if (row == MAX_LINE - 1) {
+			return null;
+		}
 		if (colspan == chars.length - 1) {// 当前字符已经是当前行最后一个
 			chars = sources.get(++row).toCharArray();
 			colspan = 0;
@@ -142,14 +145,21 @@ public class Source {
 		return sources.get(row);
 	}
 
+	public boolean isLastCharacter() {
+		return row == MAX_LINE - 1 && colspan == max_colspan - 1;
+	}
+
+	public boolean isLastLine() {
+		return row == MAX_LINE - 1;
+	}
+
 	public void sort() {
-		if (row == MAX_LINE && colspan == max_colspan) {// 源文件识别完毕
+		if (isLastCharacter()) {// 源文件识别完毕
 			return;
 		}
 		Recog recog = null;
 		Character ch = getCurrentCharacter();
 		String curr = ch.toString();
-		System.out.println(curr);
 		boolean flag = true;
 		while (flag) {
 			if (ch == ' ') {
