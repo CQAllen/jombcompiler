@@ -1,8 +1,11 @@
-<<<<<<< .mine
-integer aasdf fsdoafsjd= 10;
-integer bvv = aasdf/10;
-write(bvv);
-write(bvv);
-write(bvv);=======
-_aasdf srfss= 10;
->>>>>>> .r30
+integer aasdf = 10;
+float a = 10.4;
+void main{
+	do{
+		char b='a';
+		aasdf=aasdf+1;
+		if(aasdf==15){
+			write(a/aasdf);
+		}	
+	}while(aasdf==20)
+}

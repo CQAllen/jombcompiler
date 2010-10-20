@@ -1,15 +1,24 @@
 package cqut.gui.customcontrol;
 
-import java.io.File;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TableItem;
 
+import cqut.gui.Window;
 import cqut.gui.util.SWTUtil;
+import cqut.util.Symbol;
+import cqut.util.Token;
+import cqut.util.entity.Source;
+import cqut.util.entity.SymbolMeta;
+import cqut.util.entity.TokenMeta;
 
 public class JomMenu extends Menu {
 
@@ -69,7 +78,14 @@ public class JomMenu extends Menu {
 		destination(shell);
 		check(shell);// 查看菜单
 		help(shell);// 帮助菜单
-		addListener();
+		addFileListener();
+		addEditListener();
+		addLexicalListener();
+		addGrammerListener();
+		addIntermediateListener();
+		addDestinationListener();
+		addCheckListener();
+		addHelpListener();
 	}
 
 	private void file(Shell shell) {
@@ -116,11 +132,13 @@ public class JomMenu extends Menu {
 		cutItem = new MenuItem(editMenu, SWT.PUSH);
 		cutItem.setText("剪切(&X)\tCtrl+X");
 		cutItem.setAccelerator(SWT.CTRL + 'X');
+		cutItem.setEnabled(false);
 
 		// Edit-->pasteItem
 		pasteItem = new MenuItem(editMenu, SWT.PUSH);
 		pasteItem.setText("粘贴(&V)\tCtrl+V");
 		pasteItem.setAccelerator(SWT.CTRL + 'V');
+		pasteItem.setEnabled(false);
 	}
 
 	private void lexical(Shell shell) {
@@ -132,6 +150,19 @@ public class JomMenu extends Menu {
 		lexicalItem = new MenuItem(lexicalMenu, SWT.PUSH);
 		lexicalItem.setText("词法分析(&W)\tCtrl+W");
 		lexicalItem.setAccelerator(SWT.CTRL + 'W');
+		lexicalItem.setEnabled(false);
+
+		regularToNFAItem = new MenuItem(lexicalMenu, SWT.PUSH);
+		regularToNFAItem.setText("正规式==>NFA");
+		regularToNFAItem.setEnabled(false);
+
+		NFAToDFAItem = new MenuItem(lexicalMenu, SWT.PUSH);
+		NFAToDFAItem.setText("NFA==>DFA");
+		NFAToDFAItem.setEnabled(false);
+
+		minDFAItem = new MenuItem(lexicalMenu, SWT.PUSH);
+		minDFAItem.setText("化简DFA");
+		minDFAItem.setEnabled(false);
 	}
 
 	private void grammer(Shell shell) {
@@ -139,6 +170,22 @@ public class JomMenu extends Menu {
 		grammar.setText("语法分析(&G)");
 		grammarMenu = new Menu(shell, SWT.DROP_DOWN);
 		grammar.setMenu(grammarMenu);
+
+		grammerItem = new MenuItem(grammarMenu, SWT.PUSH);
+		grammerItem.setText("语法分析");
+		grammerItem.setEnabled(false);
+
+		predictiveParsingItem = new MenuItem(grammarMenu, SWT.PUSH);
+		predictiveParsingItem.setText("LL预测分析");
+		predictiveParsingItem.setEnabled(false);
+
+		operaterItem = new MenuItem(grammarMenu, SWT.PUSH);
+		operaterItem.setText("预算符优先");
+		operaterItem.setEnabled(false);
+
+		lranalysis = new MenuItem(grammarMenu, SWT.PUSH);
+		lranalysis.setText("LR分析");
+		lranalysis.setEnabled(false);
 	}
 
 	private void intermediate(Shell shell) {
@@ -160,6 +207,9 @@ public class JomMenu extends Menu {
 		check.setText("查看(&C)");
 		checkMenu = new Menu(shell, SWT.DROP_DOWN);
 		check.setMenu(checkMenu);
+
+		checkItem = new MenuItem(checkMenu, SWT.PUSH);
+		checkItem.setText("查看");
 	}
 
 	private void help(Shell shell) {
@@ -167,6 +217,9 @@ public class JomMenu extends Menu {
 		help.setText("帮助(&H)");
 		helpMenu = new Menu(shell, SWT.DROP_DOWN);
 		help.setMenu(helpMenu);
+
+		aboutItem = new MenuItem(helpMenu, SWT.PUSH);
+		aboutItem.setText("关于");
 	}
 
 	private MenuItem createSeparator(Menu m) {
@@ -174,13 +227,75 @@ public class JomMenu extends Menu {
 		return Separator;
 	}
 
-	private void addListener() {
+	private void addFileListener() {
 		openItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println("open");
+				String name = SWTUtil
+						.openDialog(SWT.OPEN, new String[] { "*.jom;", "*.*" },// 打开书籍文件选择对话框
+								new String[] { "jom源文件" + " (*.jom)",
+										"所有文件" + " (*.*)" });
+				if (name != null) {
+					Shell currentShell = Display.getCurrent().getActiveShell();
+					Cursor waitCursor = new Cursor(Display.getCurrent(),
+							SWT.CURSOR_WAIT);
+					currentShell.setCursor(waitCursor);// 设置鼠标忙
+
+					currentShell.setText(currentShell.getText() + " --" + name);
+					StringBuffer sb = new StringBuffer();
+					for (String s : Source.getInstance(name).getSource()) {
+						sb.append(s + "\n");
+					}
+					Window.highlightText.setText(sb.toString());
+					lexicalItem.setEnabled(true);
+
+					currentShell.setCursor(null);// 设置鼠标正常
+					waitCursor.dispose();
+				}
 			}
 		});
+	}
+
+	private void addEditListener() {
+	}
+
+	private void addLexicalListener() {
+		lexicalItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				System.out.println("lexicalItem");
+				Source.getInstance().sort();
+				List<TokenMeta> tokenMeta = Token.getTokenTable();
+				for (TokenMeta t : tokenMeta) {
+					new TableItem(Window.token, SWT.CENTER)
+							.setText(new String[] { t.getMeta(),
+									t.getLine() + "", t.getPointer() + "" });
+				}
+				List<SymbolMeta> symbolMeta = Symbol.getInstance().getSymbol();
+				for (SymbolMeta t : symbolMeta) {
+					new TableItem(Window.symbol, SWT.CENTER)
+							.setText(new String[] { t.getMeta(),
+									t.getType() + "", t.getValue() + "",
+									t.getPointer() + "", t.getKind() + "" });
+				}
+			}
+		});
+	}
+
+	private void addGrammerListener() {
+	}
+
+	private void addIntermediateListener() {
+	}
+
+	private void addDestinationListener() {
+	}
+
+	private void addCheckListener() {
+	}
+
+	private void addHelpListener() {
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package cqut.gui.util;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
@@ -69,5 +70,24 @@ public class SWTUtil {
 	public static Image getImageFromResorce(String name) {
 		return new Image(Display.getCurrent(), SWTUtil.class
 				.getResourceAsStream(name));
+	}
+
+	/**
+	 * 打开对话框
+	 * 
+	 * @param style
+	 *            对话框的风格
+	 * @param filterExtensions
+	 *            后缀名
+	 * @param filterNames
+	 * @return 选择文件的路径
+	 */
+	public static String openDialog(int style, String[] filterExtensions,
+			String[] filterNames) {
+		FileDialog fileDialog = new FileDialog(Display.getCurrent()
+				.getActiveShell(), style);
+		fileDialog.setFilterExtensions(filterExtensions);
+		fileDialog.setFilterNames(filterNames);
+		return fileDialog.open();
 	}
 }
