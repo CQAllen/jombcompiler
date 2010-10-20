@@ -211,9 +211,13 @@ public class Source {
 				+ EncodeTable.findCharactersByType(Token.ENCODETYPE_OPERATER)
 				+ "]")) {
 			recog = OperaterAnalysis.getInstance();
-		} else {
+		} 
+		else {
 			ErrorFacade.getInstance().addError(row,
 					"无法识别字符: '" + getCurrentCharacter() + "'");
+			if(Source.getInstance().isLastCharacter()){
+				return;
+			}
 			getNextCharacter();
 			sort();
 			return;
