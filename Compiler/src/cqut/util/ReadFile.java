@@ -3,6 +3,7 @@ package cqut.util;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +15,13 @@ import java.util.List;
  * 
  */
 public class ReadFile {
-	
+
 	public static String sourcePath = "src/sample.jom";
-	
+
+	public static String currentPath;
+
 	public static List<String> read(String path) {
+		currentPath = path;
 		List<String> source = new ArrayList<String>();
 		FileReader fr = null;
 		BufferedReader br = null;
@@ -27,8 +31,8 @@ public class ReadFile {
 			String strLine = "";
 			StringBuffer sb = new StringBuffer();
 			while ((strLine = br.readLine()) != null) {
-				sb.append(strLine).append("\n");
-				source.add(strLine);
+				sb.append(strLine).append('\n');
+				source.add(strLine + '\n');
 			}
 			sb = null;
 		} catch (FileNotFoundException e) {
@@ -46,5 +50,17 @@ public class ReadFile {
 			}
 		}
 		return source;
+	}
+
+	public static void write(String source) {
+		FileWriter fw;
+		try {
+			fw = new FileWriter(currentPath);
+			fw.write(source);
+			fw.flush();
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

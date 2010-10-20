@@ -23,6 +23,8 @@ public class Window {
 	public static Table token;
 	public static Table symbol;
 
+	public static boolean isDirty = false;
+
 	public Window() {
 		display = new Display();
 		shell = new Shell(display, SWT.ON_TOP | SWT.MAX | SWT.MIN | SWT.CLOSE);

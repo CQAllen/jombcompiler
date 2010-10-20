@@ -53,8 +53,18 @@ public class Symbol {
 	public void insert(SymbolMeta meta) {
 		symbols.add(meta);
 	}
-	
-	public void clear(){
+
+	public void clear() {
 		symbols.clear();
+	}
+
+	/**
+	 * 在符号表中超找当前符号是否存在
+	 * 
+	 * @param meta
+	 * @return
+	 */
+	public boolean search(SymbolMeta meta) {
+		return false;
 	}
 }

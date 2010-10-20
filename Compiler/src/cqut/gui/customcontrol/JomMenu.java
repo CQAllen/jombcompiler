@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.TableItem;
 
 import cqut.gui.Window;
 import cqut.gui.util.SWTUtil;
+import cqut.util.ReadFile;
 import cqut.util.Symbol;
 import cqut.util.Token;
 import cqut.util.entity.Source;
@@ -229,6 +230,12 @@ public class JomMenu extends Menu {
 	}
 
 	private void addFileListener() {
+		saveItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				ReadFile.write(Window.highlightText.getText());
+			}
+		});
 		openItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -246,7 +253,7 @@ public class JomMenu extends Menu {
 					currentShell.setText("Jom编译器 --" + name);
 					StringBuffer sb = new StringBuffer();
 					for (String s : Source.getInstance(name).getSource()) {
-						sb.append(s + "\n");
+						sb.append(s);
 					}
 					Window.highlightText.setText(sb.toString());
 					lexicalItem.setEnabled(true);
@@ -254,11 +261,6 @@ public class JomMenu extends Menu {
 					currentShell.setCursor(null);// 设置鼠标正常
 					waitCursor.dispose();
 				}
-//				Token.getTokenTable().clear();
-//				Symbol.getInstance().clear();
-//				System.out.println("--------------"+Token.getTokenTable().size());
-//				Window.symbol.clearAll();
-//				Window.token.clearAll();
 			}
 		});
 	}
@@ -270,10 +272,10 @@ public class JomMenu extends Menu {
 		lexicalItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				System.out.println("lexicalItem");
-				Source.getInstance().back().sort();
+				Window.symbol.removeAll();
+				Window.token.removeAll();
+				Source.getInstance().sort();
 				List<TokenMeta> tokenMeta = Token.getTokenTable();
-				System.out.println("++++++++++++++++++++"+tokenMeta.size());
 				for (TokenMeta t : tokenMeta) {
 					new TableItem(Window.token, SWT.CENTER)
 							.setText(new String[] { t.getMeta(),
