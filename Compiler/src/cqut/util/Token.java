@@ -42,6 +42,10 @@ public class Token {
 			tokenTable = new ArrayList<TokenMeta>();
 		return tokenTable;
 	}
+	
+	public void clear(){
+		tokenTable.clear();
+	}
 
 	public static int getEncodeType(TokenMeta meta)
 			throws NoSuchTokenMetaException {

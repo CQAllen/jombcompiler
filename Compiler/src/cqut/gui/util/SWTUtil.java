@@ -1,10 +1,13 @@
 package cqut.gui.util;
 
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
 public class SWTUtil {
@@ -89,5 +92,20 @@ public class SWTUtil {
 		fileDialog.setFilterExtensions(filterExtensions);
 		fileDialog.setFilterNames(filterNames);
 		return fileDialog.open();
+	}
+
+	/**
+	 * 计算使shell显示在屏幕中间的坐标
+	 * 
+	 * @return Point
+	 */
+	public static Point setLocation(Display display, Shell shell) {
+		Monitor primary = display.getPrimaryMonitor();// 获取监视器类
+		Rectangle bounds = primary.getBounds();// 得到监视器分辨率
+		Rectangle rect = shell.getBounds();// 得到shell的分辨率
+		// 计算使shell位于监视器中间的坐标
+		int x = bounds.x + (bounds.width - rect.width) / 2;
+		int y = bounds.y + (bounds.height - rect.height) / 2;
+		return new Point(x, y);
 	}
 }
