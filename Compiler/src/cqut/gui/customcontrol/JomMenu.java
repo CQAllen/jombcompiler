@@ -286,7 +286,7 @@ public class JomMenu extends Menu {
 				for (TokenMeta t : tokenMeta) {
 					new TableItem(Window.token, SWT.CENTER)
 							.setText(new String[] { t.getMeta(),
-									t.getLine() + "", t.getPointer() + "" });
+									(t.getLine() + 1) + "", t.getPointer() + "" });
 				}
 				List<SymbolMeta> symbolMeta = Symbol.getInstance().getSymbol();
 				for (SymbolMeta t : symbolMeta) {
