@@ -71,7 +71,8 @@ public class DigitAnalysis implements Recog {
 			pointer = 37;
 		}
 		insertToToken(sb.toString(),pointer);//插入Token表
-		insertToSymbol(sb.toString(),pointer);//将得到的数值插入符号表
+		insertToSymbol(sb.toString(),pointer);//将得到的数值插入符号表、
+		Source.getInstance().sort();
 	}
 
 	private void insertToToken(String string,int pointer) {

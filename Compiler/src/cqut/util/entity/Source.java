@@ -187,6 +187,9 @@ public class Source {
 		boolean flag = true;
 		while (flag) {
 			if (ch == ' ' || ch == '	'|| ch == '\n') {
+				if(isLastCharacter()){
+					return ;
+				}
 				ch = getNextCharacter();
 				curr = ch.toString();
 			} else {
