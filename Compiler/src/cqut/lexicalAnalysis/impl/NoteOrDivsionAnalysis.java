@@ -78,7 +78,7 @@ public class NoteOrDivsionAnalysis implements Recog {
 			Token.getTokenTable().add(tokenMeata);
 			return true;
 			  }else{
-				  ErrorFacade.getInstance().addError(Source.getInstance().getRow(), "多行注释未完");
+				  ErrorFacade.getInstance().addError(Source.getInstance().getRow()+1, "多行注释未完");
 			  }
 			return false;
 			}

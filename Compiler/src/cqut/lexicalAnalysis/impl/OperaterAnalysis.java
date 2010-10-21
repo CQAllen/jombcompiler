@@ -203,7 +203,7 @@ public class OperaterAnalysis implements Recog{
                  return true;
 		        }else{
 		        	state=0;
-		        	ErrorFacade.getInstance().addError(Source.getInstance().getRow(), c.toString());
+		        	ErrorFacade.getInstance().addError(Source.getInstance().getRow()+1, c.toString());
 		        	return false;
 		        }
 		}

@@ -105,13 +105,13 @@ public class DelimiterAnalysis implements Recog{
 	   	      while(true){
 	   	    	      if(Source.getInstance().isLastCharacter()){
 	   	    	    	  state=0;
-	   	    	    	  ErrorFacade.getInstance().addError(Source.getInstance().getRow(), ch.toString());
+	   	    	    	  ErrorFacade.getInstance().addError(Source.getInstance().getRow()+1, ch.toString());
 	   	    	    	  break;
 	   	    	      }
 					  c2=Source.getInstance().getNextCharacter();
 					 if(c2=='\n'){
 						 state=0;
-						 ErrorFacade.getInstance().addError(Source.getInstance().getRow(), ch.toString());
+						 ErrorFacade.getInstance().addError(Source.getInstance().getRow()+1, ch.toString());
 						break; 
 					 }
 					 
@@ -242,13 +242,13 @@ public class DelimiterAnalysis implements Recog{
    	      while(true){
    	    	      if(Source.getInstance().isLastCharacter()){
    	    	    	  state=0;
-   	    	    	ErrorFacade.getInstance().addError(Source.getInstance().getRow(), ch.toString());
+   	    	    	ErrorFacade.getInstance().addError(Source.getInstance().getRow()+1, ch.toString());
    	    	    	  break;
    	    	      }
 				  c3=Source.getInstance().getNextCharacter();
 				 if(c3=='\n'){
 					 state=0;
-					 ErrorFacade.getInstance().addError(Source.getInstance().getRow(), ch.toString());
+					 ErrorFacade.getInstance().addError(Source.getInstance().getRow()+1, ch.toString());
 					break; 
 				 }
 				 
@@ -256,7 +256,7 @@ public class DelimiterAnalysis implements Recog{
 					 
 					 if(sb3.length()>1){//一个单引号里面有几个字符报错
 			   	    	  state=0;
-			   	    	ErrorFacade.getInstance().addError(Source.getInstance().getRow(), ch.toString());
+			   	    	ErrorFacade.getInstance().addError(Source.getInstance().getRow()+1, ch.toString());
 			   	      }else{
 			   	    	  //保存char
 			   	    	  System.out.println("char="+sb3.toString());
