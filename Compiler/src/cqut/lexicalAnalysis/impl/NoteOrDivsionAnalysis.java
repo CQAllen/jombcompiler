@@ -83,6 +83,12 @@ public class NoteOrDivsionAnalysis implements Recog {
 			return false;
 			}
 		else {//是除号
+			Character c2=Source.getInstance().getNextCharacter();
+		    if(c2=='-'||c2=='+'){
+		    	
+		    	ErrorFacade.getInstance().addError(Source.getInstance().getRow()+1, "运算符"+ c.toString());
+		    	return false;
+		    }
 			tokenMeata=new TokenMeta();
 			tokenMeata.setLine(Source.getInstance().getRow());
 			tokenMeata.setMeta("/");
@@ -120,11 +126,7 @@ public class NoteOrDivsionAnalysis implements Recog {
 			   }
 			Character c= Source.getInstance().getNextCharacter();
 			Character c2=null;
-//			if(c==null){
-//				state=0;
-//				ErrorFacade.getInstance().addError(Source.getInstance().getRow(), "注释未完全");
-//				return false;
-//			}
+
 				
 			if(c=='*'){
 				if(Source.getInstance().isLastCharacter()){
