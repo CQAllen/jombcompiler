@@ -22,7 +22,7 @@ public class EncodeTable {
 	}
 
 	public static Integer search(String s) {
-		for (int i = 0; i < 53; i++) {
+		for (int i = 0; i <= 53; i++) {
 			if (s.equals(encodeTable.get(i + ""))) {
 				return i;
 			}
@@ -69,6 +69,6 @@ public class EncodeTable {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(findCharactersByType(Token.ENCODETYPE_OPERATER));
+		System.out.println(search("//"));
 	}
 }
