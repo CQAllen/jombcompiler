@@ -12,8 +12,7 @@ public class DigitAnalysis implements Recog {
 
 	@Override
 	public void error(String message) {
-		ErrorFacade.getInstance().addError(Source.getInstance().getRow(), message);
-		System.out.println("shuzi:"+message);
+		ErrorFacade.getInstance().addError(Source.getInstance().getRow()+1, message);
 	}
 
 	@Override
@@ -29,31 +28,33 @@ public class DigitAnalysis implements Recog {
 			if(Source.getInstance().isLastCharacter()){
 				return;
 			}
-			char next = Source.getInstance().getNextCharacter();
+			Character next = Source.getInstance().getNextCharacter();
 			switch (state) {
 			case 1:
 				if (isDigit(next)) {state = 1;} 
 				else if (next == 'e' || next == 'E') {state = 4;} 
 				else if (next == '.') {state = 2;flag=false;} 
-				else {state = 7;error("无法识别字符 " + next);}
+				else if(next.toString().matches("[a-zA-Z]")){state = 7;error("数字分析:无法识别字符 " + next);}
+				else{state=7;}
 				break;
 			case 2:
 				if (isDigit(next)) {state = 3;}
-				else {state = 7;error("无法识别字符 " + next);}
+				else {state = 7;error("数字分析:无法识别字符 " + next);}
 				break;
 			case 3:
 				if (isDigit(next)) {state = 3;} 
 				else if (next == 'e' || next == 'E') {state = 4;}
-				else {state = 7;}
+				else if(next.toString().matches("[a-zA-Z]")){state = 7;error("数字分析:无法识别字符 " + next);}
+				else{state=7;}
 				break;
 			case 4:
 				if (next == '-' || next == '+') {state = 5;} 
 				else if (isDigit(next)) {state = 6;} 
-				else {state = 7;error("无法识别字符 '" + next+"'");}
+				else {state = 7;error("数字分析:无法识别字符 '" + next+"'");}
 				break;
 			case 5:
 				if (isDigit(next)) {state = 6;} 
-				else {state = 7;error("无法识别字符" + next);}
+				else {state = 7;error("数字分析:无法识别字符" + next);}
 				break;
 			case 6:
 				if (isDigit(next)) {state = 6;}
