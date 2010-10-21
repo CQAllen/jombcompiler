@@ -70,6 +70,11 @@ public class OperaterAnalysis implements Recog{
 		TokenMeta tokenMeta;
 		switch(c){
 		case '+':
+			    Character c1=Source.getInstance().getNextCharacter();
+			    if(c1=='*'||c1=='/'||c1=='-'){
+			    	ErrorFacade.getInstance().addError(Source.getInstance().getRow()+1,"运算符"+ c.toString());
+			    	return false;
+			    }
 			     tokenMeta=new TokenMeta();
 		         tokenMeta.setLine(Source.getInstance().getRow());
 		         tokenMeta.setMeta("+");
@@ -78,6 +83,11 @@ public class OperaterAnalysis implements Recog{
 		         state=2;
 			     return true;
 		case '-':
+			 Character c2=Source.getInstance().getNextCharacter();
+			    if(c2=='*'||c2=='/'||c2=='+'){
+			    	ErrorFacade.getInstance().addError(Source.getInstance().getRow()+1, "运算符"+ c.toString());
+			    	return false;
+			    }
 			      tokenMeta=new TokenMeta();
                  tokenMeta.setLine(Source.getInstance().getRow());
                  tokenMeta.setMeta("-");
@@ -86,6 +96,11 @@ public class OperaterAnalysis implements Recog{
                  state=2;
 	             return true;
 		case '*':
+			Character c3=Source.getInstance().getNextCharacter();
+		    if(c3=='-'||c3=='/'||c3=='+'){
+		    	ErrorFacade.getInstance().addError(Source.getInstance().getRow()+1, "运算符"+ c.toString());
+		    	return false;
+		    }
 			tokenMeta=new TokenMeta();
             tokenMeta.setLine(Source.getInstance().getRow());
             tokenMeta.setMeta("*");
