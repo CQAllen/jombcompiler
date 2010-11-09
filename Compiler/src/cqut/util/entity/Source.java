@@ -2,12 +2,12 @@ package cqut.util.entity;
 
 import java.util.List;
 
-import cqut.lexicalAnalysis.Recog;
-import cqut.lexicalAnalysis.impl.DelimiterAnalysis;
-import cqut.lexicalAnalysis.impl.DigitAnalysis;
-import cqut.lexicalAnalysis.impl.NoteOrDivsionAnalysis;
-import cqut.lexicalAnalysis.impl.OperaterAnalysis;
-import cqut.lexicalAnalysis.impl.StringAnalysis;
+import cqut.lexicalAnalyzer.Recog;
+import cqut.lexicalAnalyzer.impl.DelimiterAnalysis;
+import cqut.lexicalAnalyzer.impl.DigitAnalysis;
+import cqut.lexicalAnalyzer.impl.NoteOrDivsionAnalysis;
+import cqut.lexicalAnalyzer.impl.OperaterAnalysis;
+import cqut.lexicalAnalyzer.impl.StringAnalysis;
 import cqut.util.EncodeTable;
 import cqut.util.ReadFile;
 import cqut.util.SystemProperty;

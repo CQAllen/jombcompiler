@@ -283,6 +283,7 @@ public class JomMenu extends Menu {
 						.openDialog(SWT.OPEN, new String[] { "*.jom;", "*.*" },// 打开书籍文件选择对话框
 								new String[] { "jom源文件" + " (*.jom)",
 										"所有文件" + " (*.*)" });
+				int a = 1;
 				if (name != null) {
 					Shell currentShell = Display.getCurrent().getActiveShell();
 					Cursor waitCursor = new Cursor(Display.getCurrent(),
@@ -292,7 +293,7 @@ public class JomMenu extends Menu {
 					currentShell.setText("Jom编译器 --" + name);
 					StringBuffer sb = new StringBuffer();
 					for (String s : Source.getInstance(name).getSource()) {
-						sb.append(s);
+						sb.append((a++)+": "+s);
 					}
 					Window.highlightText.setText(sb.toString());
 					lexicalItem.setEnabled(true);
