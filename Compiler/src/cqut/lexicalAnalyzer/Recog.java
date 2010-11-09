@@ -1,4 +1,4 @@
-package cqut.lexicalAnalysis;
+package cqut.lexicalAnalyzer;
 
 public interface Recog {
 

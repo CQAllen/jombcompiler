@@ -1,6 +1,6 @@
-package cqut.lexicalAnalysis.impl;
+package cqut.lexicalAnalyzer.impl;
 
-import cqut.lexicalAnalysis.Recog;
+import cqut.lexicalAnalyzer.Recog;
 import cqut.util.Symbol;
 import cqut.util.Token;
 import cqut.util.entity.ErrorFacade;
