@@ -98,6 +98,6 @@ public class DigitAnalysis implements Recog {
 	}
 
 	public boolean isDigit(Character ch) {
-		return ch.toString().matches("[0-9]{1}");
+		return ch.toString().matches("\\d");
 	}
 }
