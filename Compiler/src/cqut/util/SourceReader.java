@@ -15,7 +15,7 @@ import java.util.List;
  * @author Cheng
  * 
  */
-public class ReadFile {
+public class SourceReader {
 
 	public static String sourcePath = "src/sample.jom";
 
@@ -64,10 +64,10 @@ public class ReadFile {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void write(String path,String source) {
+
+	public static void write(String path, String source) {
 		File f = new File(path);
-		if(!f.exists()){
+		if (!f.exists()) {
 			try {
 				f.createNewFile();
 			} catch (IOException e) {
