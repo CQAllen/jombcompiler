@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.TableItem;
 
 import cqut.gui.Window;
 import cqut.gui.util.SWTUtil;
-import cqut.util.ReadFile;
+import cqut.util.SourceReader;
 import cqut.util.Symbol;
 import cqut.util.Token;
 import cqut.util.entity.Source;
@@ -259,7 +259,7 @@ public class JomMenu extends Menu {
 						return;
 					}
 				}
-				ReadFile.write(path, Window.highlightText.getText());
+				SourceReader.write(path, Window.highlightText.getText());
 			}
 		});
 		exitItem.addSelectionListener(new SelectionAdapter() {
@@ -272,7 +272,7 @@ public class JomMenu extends Menu {
 		saveItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				ReadFile.write(Window.highlightText.getText());
+				SourceReader.write(Window.highlightText.getText());
 			}
 		});
 		openItem.addSelectionListener(new SelectionAdapter() {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cqut.exception.NoSuchTokenMetaException;
+import cqut.util.entity.Source;
 import cqut.util.entity.TokenMeta;
 
 /**
@@ -15,6 +16,8 @@ import cqut.util.entity.TokenMeta;
 public class Token {
 
 	private static List<TokenMeta> tokenTable;
+
+	private static Token token;
 
 	/**
 	 * 编码类型为关键字
@@ -37,18 +40,39 @@ public class Token {
 	 */
 	public static final int ENCODETYPE_DELIMITER = 4;
 
+	@Deprecated
 	public static List<TokenMeta> getTokenTable() {
 		if (tokenTable == null)
 			tokenTable = new ArrayList<TokenMeta>();
 		return tokenTable;
 	}
-	
-	public void clear(){
+
+	public static Token getInstance() {
+		if (token == null) {
+			token = new Token();
+		}
+		return token;
+	}
+
+	public void clear() {
 		tokenTable.clear();
 	}
 
-	public static int getEncodeType(TokenMeta meta)
-			throws NoSuchTokenMetaException {
+	/**
+	 * 将元信息插入TOKEN表
+	 * 
+	 * @param meta
+	 * @param pointer
+	 */
+	public void insert(String meta, int pointer) {
+		TokenMeta tokenMeta = new TokenMeta();
+		tokenMeta.setLine(Source.getInstance().getRow());
+		tokenMeta.setMeta(meta);
+		tokenMeta.setPointer(pointer);
+		tokenTable.add(tokenMeta);
+	}
+
+	public int getEncodeType(TokenMeta meta) throws NoSuchTokenMetaException {
 		int pointer = meta.getPointer();
 		if (pointer <= 23 && pointer >= 1) {
 			return ENCODETYPE_KEYWORD;

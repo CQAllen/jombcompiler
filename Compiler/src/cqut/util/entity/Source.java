@@ -9,7 +9,7 @@ import cqut.lexicalAnalyzer.impl.NoteOrDivsionAnalysis;
 import cqut.lexicalAnalyzer.impl.OperaterAnalysis;
 import cqut.lexicalAnalyzer.impl.StringAnalysis;
 import cqut.util.EncodeTable;
-import cqut.util.ReadFile;
+import cqut.util.SourceReader;
 import cqut.util.SystemProperty;
 import cqut.util.Token;
 
@@ -52,7 +52,7 @@ public class Source {
 	private static void init(String filepath) {
 		sourceCode = new Source();
 		SystemProperty.readProperties();// 读取语言编码表
-		sources = ReadFile.read(filepath);// 读源文件
+		sources = SourceReader.read(filepath);// 读源文件
 		MAX_LINE = sources.size();
 		max_colspan = sources.get(0).length();
 		row = 0;
@@ -60,7 +60,7 @@ public class Source {
 	}
 
 	private static void init() {
-		init(ReadFile.sourcePath);
+		init(SourceReader.sourcePath);
 	}
 
 	public List<String> getSource() {
