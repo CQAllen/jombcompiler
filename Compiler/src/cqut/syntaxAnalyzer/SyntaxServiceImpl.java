@@ -29,4 +29,9 @@ public class SyntaxServiceImpl implements SyntaxService {
 		return 0;
 	}
 
+	@Override
+	public Syntax getCurrent() {
+		return null;
+	}
+
 }

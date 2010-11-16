@@ -15,9 +15,10 @@ import cqut.util.entity.TokenMeta;
  */
 public class Token {
 
-	private static List<TokenMeta> tokenTable;
+	private List<TokenMeta> tokenTable;
 
 	private static Token token;
+	private int current;
 
 	/**
 	 * 编码类型为关键字
@@ -39,13 +40,6 @@ public class Token {
 	 * 编码类型为界符
 	 */
 	public static final int ENCODETYPE_DELIMITER = 4;
-
-	@Deprecated
-	public static List<TokenMeta> getTokenTable() {
-		if (tokenTable == null)
-			tokenTable = new ArrayList<TokenMeta>();
-		return tokenTable;
-	}
 
 	public static Token getInstance() {
 		if (token == null) {
@@ -87,6 +81,59 @@ public class Token {
 		} else {
 			throw new NoSuchTokenMetaException("未找到该Token元信息@" + meta.getMeta());
 		}
+	}
+
+	public List<TokenMeta> getAllMeta() {
+		return tokenTable;
+	}
+
+	/**
+	 * 获取当前指向的TOKEN表元信息
+	 * 
+	 * @return
+	 */
+	public TokenMeta getCurrentMeta() {
+		return tokenTable.get(current);
+	}
+
+	/**
+	 * 获取下一个TOKEN表元信息
+	 * 
+	 * @return
+	 */
+	public TokenMeta getNext() {
+		return tokenTable.get(++current);
+	}
+
+	/**
+	 * 获取上一个TOKEN表元信息
+	 * 
+	 * @return
+	 */
+	public TokenMeta getPrevious() {
+		return tokenTable.get(--current);
+	}
+
+	/**
+	 * 获取第一个TOKEN表元信息，指针不移动
+	 * 
+	 * @return
+	 */
+	public TokenMeta getFirst() {
+		return tokenTable.get(0);
+	}
+
+	/**
+	 * 获取最后一个TOKEN表元信息，指针不移动
+	 * 
+	 * @return
+	 */
+	public TokenMeta getLast() {
+		return tokenTable.get(tokenTable.size() - 1);
+	}
+
+	public int size() {
+		return tokenTable.size();
 	}
 
 }

@@ -10,7 +10,7 @@ import cqut.util.entity.Syntax;
  * @date 2010-11-16
  */
 public interface SyntaxService {
-	
+
 	public Syntax getNext();
 
 	public Syntax getPrevious();
@@ -18,6 +18,8 @@ public interface SyntaxService {
 	public Syntax getLast();
 
 	public Syntax getFirst();
+
+	public Syntax getCurrent();
 
 	public int size();
 }
