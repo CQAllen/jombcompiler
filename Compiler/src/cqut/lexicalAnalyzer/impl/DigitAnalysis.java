@@ -12,7 +12,8 @@ public class DigitAnalysis implements Recog {
 
 	@Override
 	public void error(String message) {
-		ErrorFacade.getInstance().addError(Source.getInstance().getRow()+1, message);
+		ErrorFacade.getInstance().addError(Source.getInstance().getRow() + 1,
+				message);
 	}
 
 	@Override
@@ -25,40 +26,70 @@ public class DigitAnalysis implements Recog {
 		boolean flag = true;
 		int state = 1;
 		while (state != 7) {
-			if(Source.getInstance().isLastCharacter()){
+			if (Source.getInstance().isLastCharacter()) {
 				return;
 			}
 			Character next = Source.getInstance().getNextCharacter();
 			switch (state) {
 			case 1:
-				if (isDigit(next)) {state = 1;} 
-				else if (next == 'e' || next == 'E') {state = 4;} 
-				else if (next == '.') {state = 2;flag=false;} 
-				else if(next.toString().matches("[a-zA-Z]")){state = 7;error("数字分析:无法识别字符 " + next);}
-				else{state=7;}
+				if (isDigit(next)) {
+					state = 1;
+				} else if (next == 'e' || next == 'E') {
+					state = 4;
+				} else if (next == '.') {
+					state = 2;
+					flag = false;
+				} else if (next.toString().matches("[a-zA-Z]")) {
+					state = 7;
+					error("数字分析:无法识别字符 " + next);
+				} else {
+					state = 7;
+				}
 				break;
 			case 2:
-				if (isDigit(next)) {state = 3;}
-				else {state = 7;error("数字分析:无法识别字符 " + next);}
+				if (isDigit(next)) {
+					state = 3;
+				} else {
+					state = 7;
+					error("数字分析:无法识别字符 " + next);
+				}
 				break;
 			case 3:
-				if (isDigit(next)) {state = 3;} 
-				else if (next == 'e' || next == 'E') {state = 4;}
-				else if(next.toString().matches("[a-zA-Z]")){state = 7;error("数字分析:无法识别字符 " + next);}
-				else{state=7;}
+				if (isDigit(next)) {
+					state = 3;
+				} else if (next == 'e' || next == 'E') {
+					state = 4;
+				} else if (next.toString().matches("[a-zA-Z]")) {
+					state = 7;
+					error("数字分析:无法识别字符 " + next);
+				} else {
+					state = 7;
+				}
 				break;
 			case 4:
-				if (next == '-' || next == '+') {state = 5;} 
-				else if (isDigit(next)) {state = 6;} 
-				else {state = 7;error("数字分析:无法识别字符 '" + next+"'");}
+				if (next == '-' || next == '+') {
+					state = 5;
+				} else if (isDigit(next)) {
+					state = 6;
+				} else {
+					state = 7;
+					error("数字分析:无法识别字符 '" + next + "'");
+				}
 				break;
 			case 5:
-				if (isDigit(next)) {state = 6;} 
-				else {state = 7;error("数字分析:无法识别字符" + next);}
+				if (isDigit(next)) {
+					state = 6;
+				} else {
+					state = 7;
+					error("数字分析:无法识别字符" + next);
+				}
 				break;
 			case 6:
-				if (isDigit(next)) {state = 6;}
-				else {state = 7;}
+				if (isDigit(next)) {
+					state = 6;
+				} else {
+					state = 7;
+				}
 				break;
 			}
 			if (state != 7) {
@@ -66,32 +97,28 @@ public class DigitAnalysis implements Recog {
 			}
 		}
 		int pointer = 0;
-		if(flag){
+		if (flag) {
 			pointer = 36;
-		}else {
+		} else {
 			pointer = 37;
 		}
-		insertToToken(sb.toString(),pointer);//插入Token表
-		insertToSymbol(sb.toString(),pointer);//将得到的数值插入符号表、
+		insertToToken(sb.toString(), pointer);// 插入Token表
+		insertToSymbol(sb.toString(), pointer);// 将得到的数值插入符号表、
 		Source.getInstance().sort();
 	}
 
-	private void insertToToken(String string,int pointer) {
-		TokenMeta tokenMeta = new TokenMeta();
-		tokenMeta.setLine(Source.getInstance().getRow());
-		tokenMeta.setMeta(string);
-		tokenMeta.setPointer(pointer);
-		Token.getTokenTable().add(tokenMeta);
+	private void insertToToken(String string, int pointer) {
+		Token.getInstance().insert(string, pointer);
 	}
 
-	private void insertToSymbol(String string,int pointer) {
+	private void insertToSymbol(String string, int pointer) {
 		SymbolMeta symbolMeta = new SymbolMeta();
 		symbolMeta.setMeta(string);
 		symbolMeta.setPointer(pointer);
 		symbolMeta.setKind(Symbol.KIND_NUM);
-		if(pointer==36){
+		if (pointer == 36) {
 			symbolMeta.setType(Symbol.TYPE_INTEGER);
-		}else if(pointer==37){
+		} else if (pointer == 37) {
 			symbolMeta.setType(Symbol.TYPE_FLOAT);
 		}
 		Symbol.getInstance().insert(symbolMeta);
