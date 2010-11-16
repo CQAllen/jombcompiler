@@ -150,21 +150,21 @@ public class StringAnalysis implements Recog {
 
 	private void addIdentifier(String Str_temp) {
 		// TODO Auto-generated method stub
-		TokenMeta Cur = new TokenMeta();
-		Cur.setLine(Source.getInstance().getRow());
-		Cur.setMeta(Str_temp);
-		Cur.setPointer(35);
-		Token.getTokenTable().add(Cur);
+//		TokenMeta Cur = new TokenMeta();
+//		Cur.setLine(Source.getInstance().getRow());
+//		Cur.setMeta(Str_temp);
+//		Cur.setPointer(35);
+		Token.getInstance().insert(Str_temp, 35);
 	}
 
 	private void addKeyword(String Str_temp) {
 		// TODO Auto-generated method stub
 		int Cur_pointer = EncodeTable.search(Str_temp);
-		TokenMeta Cur = new TokenMeta();
-		Cur.setLine(Source.getInstance().getRow());
-		Cur.setMeta(Str_temp);
-		Cur.setPointer(Cur_pointer);
-		Token.getTokenTable().add(Cur);
+//		TokenMeta Cur = new TokenMeta();
+//		Cur.setLine(Source.getInstance().getRow());
+//		Cur.setMeta(Str_temp);
+//		Cur.setPointer(Cur_pointer);
+		Token.getInstance().insert(Str_temp, Cur_pointer);
 	}
 
 }
