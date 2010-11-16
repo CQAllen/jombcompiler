@@ -9,10 +9,10 @@ public class Regeg {
 		// System.out.println("2".matches("[0-9]{1}"));
 		Source.getInstance().sort();
 		System.out.println("Token：表");
-		for (int i = 0; i < Token.getTokenTable().size(); i++)
-			System.out.println(Token.getTokenTable().get(i).getMeta() + "\t"
-					+ (Token.getTokenTable().get(i).getLine() + 1) + "行\t"
-					+ Token.getTokenTable().get(i).getPointer());
+		for (int i = 0; i < Token.getInstance().size(); i++)
+			System.out.println(Token.getInstance().getAllMeta().get(i).getMeta() + "\t"
+					+ (Token.getInstance().getAllMeta().get(i).getLine() + 1) + "行\t"
+					+ Token.getInstance().getAllMeta().get(i).getPointer());
 		System.out.println("符号表：");
 		for (int i = 0; i < Symbol.getInstance().getSymbol().size(); i++)
 			System.out.println(Symbol.getInstance().getSymbol().get(i)
