@@ -132,6 +132,10 @@ public class Token {
 		return tokenTable.get(tokenTable.size() - 1);
 	}
 
+	public TokenMeta get(int index) {
+		return tokenTable.get(index);
+	}
+
 	public int size() {
 		return tokenTable.size();
 	}
