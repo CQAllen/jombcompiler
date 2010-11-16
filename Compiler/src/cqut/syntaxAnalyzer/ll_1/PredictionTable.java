@@ -10,7 +10,7 @@ package cqut.syntaxAnalyzer.ll_1;
 public class PredictionTable {
 
 	private void first() {
-
+		
 	}
 
 	private void follow() {
