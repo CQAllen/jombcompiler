@@ -62,43 +62,27 @@ public class DelimiterAnalysis implements Recog{
 		
 		case ';': 
 			
-			     tokenMeata=new TokenMeta();
-		         tokenMeata.setLine(Source.getInstance().getRow());
-		         tokenMeata.setMeta(";");
-		         tokenMeata.setPointer(EncodeTable.search(";"));
+
 		         
-		         Token.getTokenTable().add(tokenMeata);
+		         Token.getInstance().insert(";", EncodeTable.search(";"));
                 
 		          return true;
 			
 		case ',':
-			    tokenMeata=new TokenMeta();
-			    tokenMeata.setLine(Source.getInstance().getRow());
-			    tokenMeata.setMeta(",");
-			    tokenMeata.setPointer(EncodeTable.search(","));
-		        Token.getTokenTable().add(tokenMeata);
+			 
+			    Token.getInstance().insert(",", EncodeTable.search(","));
 		        return true;
 		case '.': 
-			    tokenMeata=new TokenMeta();
-			   tokenMeata.setLine(Source.getInstance().getRow());
-			   tokenMeata.setMeta(".");
-			   tokenMeata.setPointer(EncodeTable.search("."));
-		       Token.getTokenTable().add(tokenMeata);
+			 
+			 Token.getInstance().insert(".", EncodeTable.search("."));
 		       return true;
 		case ':':
-			   tokenMeata=new TokenMeta();
-			   tokenMeata.setLine(Source.getInstance().getRow());
-			   tokenMeata.setMeta(":");
-			   tokenMeata.setPointer(EncodeTable.search(":"));
-		       Token.getTokenTable().add(tokenMeata);
+
+			 Token.getInstance().insert(":", EncodeTable.search(":"));
 		       return true;
 		case '"': 
 			 
-			 tokenMeata=new TokenMeta();
-			 tokenMeata.setLine(Source.getInstance().getRow());
-			 tokenMeata.setMeta("\"");
-			 tokenMeata.setPointer(EncodeTable.search("\""));
-	         Token.getTokenTable().add(tokenMeata);
+	         Token.getInstance().insert("\"", EncodeTable.search("\""));
 //	         MyList.getList().add("\"");//用于判断到一句话结束的时候看“的个数 
 	         StringBuffer sb=new StringBuffer();
 	         Character c2;
@@ -118,11 +102,7 @@ public class DelimiterAnalysis implements Recog{
 					 if(c2=='\"'){
 						 
 						  //保存String
-			   	    	  TokenMeta t1=new TokenMeta();
-			   	    	  t1.setMeta(sb.toString());
-			   	    	  t1.setLine(Source.getInstance().getRow());
-			   	    	  t1.setPointer(38);
-			   	    	  Token.getTokenTable().add(t1);
+			   	    	 Token.getInstance().insert(sb.toString(), 38);
 			   	    	  
 			   	    	  SymbolMeta sm=new SymbolMeta();
 			   	    	  sm.setPointer(38);
@@ -131,113 +111,59 @@ public class DelimiterAnalysis implements Recog{
 			   	    	  Symbol.getInstance().insert(sm);
 			   	          sb=null;
 			   	          
-						 tokenMeata=new TokenMeta();
-						 tokenMeata.setLine(Source.getInstance().getRow());
-						 tokenMeata.setMeta("\"");
-						 tokenMeata.setPointer(EncodeTable.search("\""));
-				         Token.getTokenTable().add(tokenMeata);
+					
+						 Token.getInstance().insert("\"", EncodeTable.search("\""));
 //				         MyList.getList().add("\"");
 				         break;
 					 }
 					 sb.append(c2);
 				 }
 	   	     
-//	   	    	  //保存String
-//	   	    	  TokenMeta t1=new TokenMeta();
-//	   	    	  t1.setMeta(sb.toString());
-//	   	    	  t1.setLine(Source.getInstance().getRow());
-//	   	    	  t1.setPointer(38);
-//	   	    	  Token.getTokenTable().add(t1);
-//	   	    	  
-//	   	    	  SymbolMeta sm=new SymbolMeta();
-//	   	    	  sm.setPointer(38);
-//	   	    	  sm.setKind(Symbol.KIND_NUM);
-//	   	    	  sm.setMeta(sb.toString());
-//	   	    	  Symbol.getInstance().insert(sm);
-//	   	          sb=null;
+
 	         return true;
 		case '(':
-			 tokenMeata=new TokenMeta();
-			 tokenMeata.setLine(Source.getInstance().getRow());
-			 tokenMeata.setMeta("(");
-			 tokenMeata.setPointer(EncodeTable.search("("));
-	         Token.getTokenTable().add(tokenMeata);
-//		     MyStack.getStack().add('(');
+			 Token.getInstance().insert("(", EncodeTable.search("("));
+
 		     return true;
 		       
 		            
 		
 		case ')':
 			
-			 tokenMeata=new TokenMeta();
-			 tokenMeata.setLine(Source.getInstance().getRow());
-			 tokenMeata.setMeta(")");
-			 tokenMeata.setPointer(EncodeTable.search(")"));
-	         Token.getTokenTable().add(tokenMeata);
-//	    	 if(MyStack.getStack().size()==0){
-//         			state=0;
-//         			return true;
-//         		}
-//         		MyStack.getStack().pop();
+	
+	         Token.getInstance().insert(")", EncodeTable.search(")"));
          		break;
 		case '[':
-			 tokenMeata=new TokenMeta();
-			 tokenMeata.setLine(Source.getInstance().getRow());
-			 tokenMeata.setMeta("[");
-			 tokenMeata.setPointer(EncodeTable.search("]"));
-	         Token.getTokenTable().add(tokenMeata);
-//		     MyStack2.getStack().add('[');
+		
+	         Token.getInstance().insert("[", EncodeTable.search("["));
 		     return true;
 		       
 		            
 		
 		case ']':
 			
-			 tokenMeata=new TokenMeta();
-			 tokenMeata.setLine(Source.getInstance().getRow());
-			 tokenMeata.setMeta("]");
-			 tokenMeata.setPointer(EncodeTable.search("]"));
-	         Token.getTokenTable().add(tokenMeata);
-//	    	 if(MyStack2.getStack().size()==0){
-//        			state=0;
-//        			return true;
-//        		}
-//        		MyStack2.getStack().pop();
+
+	         Token.getInstance().insert("]", EncodeTable.search("]"));
+
         		break;
 		case '{':
-			 tokenMeata=new TokenMeta();
-			 tokenMeata.setLine(Source.getInstance().getRow());
-			 tokenMeata.setMeta("{");
-			 tokenMeata.setPointer(EncodeTable.search("{"));
-	         Token.getTokenTable().add(tokenMeata);
-//		     MyStack3.getStack().add('{');
+	
+	         Token.getInstance().insert("{", EncodeTable.search("{"));
 		     return true;
 		     
 		            
 		
 		case '}':
 			
-			 tokenMeata=new TokenMeta();
-			 tokenMeata.setLine(Source.getInstance().getRow());
-			 tokenMeata.setMeta("}");
-			 tokenMeata.setPointer(EncodeTable.search("}"));
-	         Token.getTokenTable().add(tokenMeata);
-//	    	 if(MyStack3.getStack().size()==0){
-//       			state=0;
-//       			return true;
-//       		}
-//       		MyStack3.getStack().pop();
+
+	         Token.getInstance().insert("}", EncodeTable.search("}"));
        		break;  
          		
          		
         case '\'':
         	 StringBuffer sb3=new StringBuffer();
-         	 tokenMeata=new TokenMeta();
-   			 tokenMeata.setLine(Source.getInstance().getRow());
-   			 tokenMeata.setMeta("\'");
-   			 tokenMeata.setPointer(EncodeTable.search("\'"));
-   	         Token.getTokenTable().add(tokenMeata);
-//   	         MyList2.getList().add("\'");//用于判断到一句话结束的时候看“的个数
+ 
+   	      Token.getInstance().insert("\'", EncodeTable.search("\'"));
    	      Character c3;
    	      while(true){
    	    	      if(Source.getInstance().isLastCharacter()){
@@ -260,12 +186,8 @@ public class DelimiterAnalysis implements Recog{
 			   	      }else{
 			   	    	  //保存char
 			   	    	  System.out.println("char="+sb3.toString());
-			   	    	  TokenMeta t=new TokenMeta();
-			   	    	  t.setMeta(sb3.toString());
-			   	    	  t.setLine(Source.getInstance().getRow());
-			   	    	  t.setPointer(38);
-			   	    	  Token.getTokenTable().add(t);
-			   	    	  
+			   	    	
+			   	    	 Token.getInstance().insert(sb3.toString(), 38);
 			   	    	 SymbolMeta sm2=new SymbolMeta();
 			 	    	  sm2.setPointer(38);
 			 	    	  sm2.setKind(Symbol.KIND_NUM);
@@ -274,11 +196,8 @@ public class DelimiterAnalysis implements Recog{
 			   	    	  sb3=null;
 			   	    	  
 			   	      }
-					 tokenMeata=new TokenMeta();
-					 tokenMeata.setLine(Source.getInstance().getRow());
-					 tokenMeata.setMeta("\'");
-					 tokenMeata.setPointer(EncodeTable.search("\'"));
-			         Token.getTokenTable().add(tokenMeata);
+				
+			         Token.getInstance().insert("\'", EncodeTable.search("\'"));
 //			         MyList.getList().add("\'");
 			         break;
 				 }
