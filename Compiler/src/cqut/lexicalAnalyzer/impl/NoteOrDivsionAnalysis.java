@@ -54,28 +54,19 @@ public class NoteOrDivsionAnalysis implements Recog {
 		
 		if(c.equals('/')){//判断单行注释
 			
-			 tokenMeata=new TokenMeta();
-			tokenMeata.setLine(Source.getInstance().getRow());
-			tokenMeata.setMeta("//");
-			tokenMeata.setPointer(EncodeTable.search("//"));
-			Token.getTokenTable().add(tokenMeata);
+	
+			 Token.getInstance().insert("//", EncodeTable.search("//"));
             return sigenlineNote();
             
        }
 		else if(c.equals('*')){//判断多行注释
-			tokenMeata=new TokenMeta();
-			tokenMeata.setLine(Source.getInstance().getRow());
-			tokenMeata.setMeta("/*");
-			tokenMeata.setPointer(EncodeTable.search("/*"));
-			Token.getTokenTable().add(tokenMeata);
+	
+			 Token.getInstance().insert("/*", EncodeTable.search("/*"));
 
 			if(doubleNote()){
 			
-			 tokenMeata=new TokenMeta();
-			tokenMeata.setLine(Source.getInstance().getRow());
-			tokenMeata.setMeta("*/");
-			tokenMeata.setPointer(EncodeTable.search("*/"));
-			Token.getTokenTable().add(tokenMeata);
+		
+			 Token.getInstance().insert("*/", EncodeTable.search("*/"));
 			return true;
 			  }else{
 				  ErrorFacade.getInstance().addError(Source.getInstance().getRow()+1, "多行注释未完");
@@ -89,11 +80,8 @@ public class NoteOrDivsionAnalysis implements Recog {
 		    	ErrorFacade.getInstance().addError(Source.getInstance().getRow()+1, "运算符"+ c.toString());
 		    	return false;
 		    }
-			tokenMeata=new TokenMeta();
-			tokenMeata.setLine(Source.getInstance().getRow());
-			tokenMeata.setMeta("/");
-			tokenMeata.setPointer(EncodeTable.search("/"));
-			Token.getTokenTable().add(tokenMeata);
+		
+			 Token.getInstance().insert("/", EncodeTable.search("/"));
 		    return true;
 			}
 		

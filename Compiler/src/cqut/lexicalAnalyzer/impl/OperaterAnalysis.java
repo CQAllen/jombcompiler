@@ -75,11 +75,8 @@ public class OperaterAnalysis implements Recog{
 			    	ErrorFacade.getInstance().addError(Source.getInstance().getRow()+1,"运算符"+ c.toString());
 			    	return false;
 			    }
-			     tokenMeta=new TokenMeta();
-		         tokenMeta.setLine(Source.getInstance().getRow());
-		         tokenMeta.setMeta("+");
-		         tokenMeta.setPointer(EncodeTable.search("+"));
-		         Token.getTokenTable().add(tokenMeta);
+			 
+		         Token.getInstance().insert("+", EncodeTable.search("+"));
 		         state=2;
 			     return true;
 		case '-':
@@ -88,11 +85,8 @@ public class OperaterAnalysis implements Recog{
 			    	ErrorFacade.getInstance().addError(Source.getInstance().getRow()+1, "运算符"+ c.toString());
 			    	return false;
 			    }
-			      tokenMeta=new TokenMeta();
-                 tokenMeta.setLine(Source.getInstance().getRow());
-                 tokenMeta.setMeta("-");
-                 tokenMeta.setPointer(EncodeTable.search("-"));
-                 Token.getTokenTable().add(tokenMeta);
+			      
+                 Token.getInstance().insert("-", EncodeTable.search("-"));
                  state=2;
 	             return true;
 		case '*':
@@ -101,86 +95,58 @@ public class OperaterAnalysis implements Recog{
 		    	ErrorFacade.getInstance().addError(Source.getInstance().getRow()+1, "运算符"+ c.toString());
 		    	return false;
 		    }
-			tokenMeta=new TokenMeta();
-            tokenMeta.setLine(Source.getInstance().getRow());
-            tokenMeta.setMeta("*");
-            tokenMeta.setPointer(EncodeTable.search("*"));
-            Token.getTokenTable().add(tokenMeta);
+		
+            Token.getInstance().insert("*", EncodeTable.search("*"));
             state=2;
 			return true;
 
 		case '<':if(Source.getInstance().getNextCharacter().equals('='))
 		           {
-			tokenMeta=new TokenMeta();
-            tokenMeta.setLine(Source.getInstance().getRow());
-            tokenMeta.setMeta("+");
-            tokenMeta.setPointer(EncodeTable.search("+"));
-            Token.getTokenTable().add(tokenMeta);
+		
+            Token.getInstance().insert("+", EncodeTable.search("+"));
             return true;
 			        }else
 			        	{
-			        	tokenMeta=new TokenMeta();
-			            tokenMeta.setLine(Source.getInstance().getRow());
-			            tokenMeta.setMeta("<");
-			            tokenMeta.setPointer(EncodeTable.search("<"));
-			            Token.getTokenTable().add(tokenMeta);
+			        
+			            Token.getInstance().insert("<", EncodeTable.search("<"));
 //			        	Source.getInstance().getLastCharacter();//用来回退
 			        	}
 		           return true;
 		case '>':
 			if(Source.getInstance().isLastCharacter()){
 				
-			 	tokenMeta=new TokenMeta();
-            tokenMeta.setLine(Source.getInstance().getRow());
-            tokenMeta.setMeta(">");
-            tokenMeta.setPointer(EncodeTable.search(">"));
-            Token.getTokenTable().add(tokenMeta);
+		
+            Token.getInstance().insert(">", EncodeTable.search(">"));
 				return true;
 			}
 		  if(Source.getInstance().getNextCharacter().equals('='))
 		           {
-			tokenMeta=new TokenMeta();
-            tokenMeta.setLine(Source.getInstance().getRow());
-            tokenMeta.setMeta(">=");
-            tokenMeta.setPointer(EncodeTable.search(">="));
-            Token.getTokenTable().add(tokenMeta);
+		
+            Token.getInstance().insert(">=", EncodeTable.search(">="));
             return true;
 			        }else
 			        	{
-			        	tokenMeta=new TokenMeta();
-			            tokenMeta.setLine(Source.getInstance().getRow());
-			            tokenMeta.setMeta(">");
-			            tokenMeta.setPointer(EncodeTable.search(">"));
-			            Token.getTokenTable().add(tokenMeta);
-
+			     
+			            Token.getInstance().insert(">", EncodeTable.search(">"));
 			        	}
 		               return true;
           
 		case '=':	
 	         if(Source.getInstance().isLastCharacter()){
 				
-			 	tokenMeta=new TokenMeta();
-            tokenMeta.setLine(Source.getInstance().getRow());
-            tokenMeta.setMeta("=");
-            tokenMeta.setPointer(EncodeTable.search("="));
-            Token.getTokenTable().add(tokenMeta);
+		
+            Token.getInstance().insert("=", EncodeTable.search("="));
 				return true;
 			}
 			if(Source.getInstance().getNextCharacter().equals('='))
 	           {
-		             tokenMeta=new TokenMeta();
-                     tokenMeta.setLine(Source.getInstance().getRow());
-                     tokenMeta.setMeta("==");
-                     tokenMeta.setPointer(EncodeTable.search("=="));
-                     Token.getTokenTable().add(tokenMeta);
+		    
+                     Token.getInstance().insert("==", EncodeTable.search("=="));
                        return true;
 		        }else
 		        	{
-		        	tokenMeta=new TokenMeta();
-		            tokenMeta.setLine(Source.getInstance().getRow());
-		            tokenMeta.setMeta("=");
-		            tokenMeta.setPointer(EncodeTable.search("="));
-		            Token.getTokenTable().add(tokenMeta);
+		        
+		            Token.getInstance().insert("=", EncodeTable.search("="));
 //		        	Source.getInstance().getLastCharacter();//用来回退
 		        	}
 	           return true;
@@ -195,11 +161,8 @@ public class OperaterAnalysis implements Recog{
 			}
 			if(Source.getInstance().getNextCharacter().equals('='))
 	           {
-		         tokenMeta=new TokenMeta();
-                 tokenMeta.setLine(Source.getInstance().getRow());
-                 tokenMeta.setMeta("!=");
-                 tokenMeta.setPointer(EncodeTable.search("!="));
-                 Token.getTokenTable().add(tokenMeta);
+
+                 Token.getInstance().insert("!=", EncodeTable.search("!="));
                  return true;
 		        }else{
 		        	state=0;
