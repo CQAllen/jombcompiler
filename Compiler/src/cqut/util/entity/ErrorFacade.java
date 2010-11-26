@@ -3,6 +3,8 @@ package cqut.util.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import cqut.util.SourceReader;
+
 public class ErrorFacade {
 	private static ErrorFacade errorFacade;
 	private static int count = 0;
@@ -16,8 +18,12 @@ public class ErrorFacade {
 		return errorFacade;
 	}
 
-	public void addError(int row, String message) {
-		errors.add(new Error(row, message));
+	public void addError(String message, String type) {
+		Error error = new Error(message, type);
+		error.setLocation(Source.getInstance().getRow());
+		error.setPath(SourceReader.getAbsoluteFilePath());
+		error.setResource(SourceReader.getFileName());
+		errors.add(error);
 		count++;
 	}
 
@@ -27,5 +33,9 @@ public class ErrorFacade {
 
 	public List<Error> getErrors() {
 		return errors;
+	}
+	
+	public void clear(){
+		errors.clear();
 	}
 }

@@ -59,7 +59,6 @@ public class StringAnalysis implements Recog {
 
 	private void isIdentifier(Character ch) {// 包含下划线,不可能是关键字
 		// TODO Auto-generated method stub
-		System.out.println(ch);
 		// if (ch != ' ' && ch != ';' && ch != '+' && ch != '-' && ch != '*'
 		// && ch != '/' && ch != '=' && ch != '(' && ch != ')'
 		// && ch != '[' && ch != ']') {
@@ -91,7 +90,6 @@ public class StringAnalysis implements Recog {
 
 	private void isKeyword(Character ch) {// 纯字母组成，有可能是关键字
 		// TODO Auto-generated method stub
-		System.out.println(ch);
 //		if (ch != ' ' && ch != ';' && ch != '+' && ch != '-' && ch != '*'
 //				&& ch != '/' && ch != '=' && ch != '(' && ch != ')'
 //				&& ch != '[' && ch != ']') {

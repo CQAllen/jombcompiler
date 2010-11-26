@@ -67,6 +67,7 @@ public class SourceReader {
 
 	public static void write(String path, String source) {
 		File f = new File(path);
+		System.out.println(path);
 		if (!f.exists()) {
 			try {
 				f.createNewFile();
@@ -76,12 +77,26 @@ public class SourceReader {
 		}
 		FileWriter fw;
 		try {
-			fw = new FileWriter(path);
+			fw = new FileWriter(f);
 			fw.write(source);
 			fw.flush();
 			fw.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * 获取当前源文件路径
+	 * 
+	 * @return
+	 */
+	public static String getAbsoluteFilePath() {
+		return currentPath;
+	}
+
+	public static String getFileName() {
+		String[] s = currentPath.split("\\\\");
+		return s[s.length - 1];
 	}
 }

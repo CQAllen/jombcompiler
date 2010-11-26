@@ -37,7 +37,6 @@ public class EncodeTable {
 	 * @return
 	 */
 	public static String findCharactersByType(int type) {
-		SystemProperty.readProperties();
 		switch (type) {
 		case Token.ENCODETYPE_KEYWORD:
 			return find(1, 23);

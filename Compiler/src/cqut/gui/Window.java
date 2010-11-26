@@ -5,6 +5,7 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -22,8 +23,8 @@ public class Window {
 	public static HighlightText highlightText;
 	public static Table token;
 	public static Table symbol;
-
-	public static boolean isDirty = false;
+	public static Table problems;
+	public static List lineNumber;
 
 	public Window() {
 		display = new Display();
@@ -51,16 +52,29 @@ public class Window {
 	}
 
 	private void createContent() {
-		SashForm form = new SashForm(shell, SWT.HORIZONTAL);
+		SashForm form = new SashForm(shell, SWT.VERTICAL);
 		form.setLayout(new FillLayout());
+		createMainComposite(form);
+		createErrorComposite(form);
+		form.setWeights(new int[] { 78, 22 });
+	}
 
+	private void createListComposite(Composite parent) {
+		lineNumber = new List(parent, SWT.NONE);
+		lineNumber.add(1 + "");
+		lineNumber.setEnabled(false);
+	}
+
+	private void createMainComposite(Composite parent) {
+		SashForm form = new SashForm(parent, SWT.HORIZONTAL);
+		form.setLayout(new FillLayout());
+		createListComposite(form);
 		highlightText = new HighlightText(form, SWT.BORDER | SWT.WRAP);
-
+		highlightText.setFocus();
 		Composite child = new Composite(form, SWT.NONE);
 		child.setLayout(new FillLayout());
 		createComposite(child);
-
-		form.setWeights(new int[] { 40, 60 });
+		form.setWeights(new int[] { 2, 38, 60 });
 	}
 
 	private void createComposite(Composite child) {
@@ -80,7 +94,6 @@ public class Window {
 	private void createUpComposite(Composite up) {
 		token = new Table(up, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER);
 		token.setHeaderVisible(true);
-		token.setLinesVisible(true);
 
 		TableColumn meta = new TableColumn(token, SWT.LEFT);
 		meta.setText("字符");
@@ -98,7 +111,6 @@ public class Window {
 	private void createDownComposite(Composite down) {
 		symbol = new Table(down, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER);
 		symbol.setHeaderVisible(true);
-		symbol.setLinesVisible(true);
 
 		TableColumn meta = new TableColumn(symbol, SWT.LEFT);
 		meta.setText("字符");
@@ -106,7 +118,7 @@ public class Window {
 
 		TableColumn line = new TableColumn(symbol, SWT.LEFT);
 		line.setText("类型");
-		line.setWidth(100);
+		line.setWidth(70);
 
 		TableColumn value = new TableColumn(symbol, SWT.LEFT);
 		value.setText("数值");
@@ -119,6 +131,33 @@ public class Window {
 		TableColumn kind = new TableColumn(symbol, SWT.LEFT);
 		kind.setText("种属");
 		kind.setWidth(100);
+	}
+
+	private void createErrorComposite(Composite parent) {
+		problems = new Table(parent, SWT.MULTI | SWT.FULL_SELECTION
+				| SWT.BORDER);
+		problems.setHeaderVisible(true);
+		problems.setLinesVisible(true);
+	
+		TableColumn description = new TableColumn(problems, SWT.LEFT);
+		description.setText("Description");
+		description.setWidth(300);
+	
+		TableColumn resource = new TableColumn(problems, SWT.LEFT);
+		resource.setText("Resource");
+		resource.setWidth(100);
+	
+		TableColumn path = new TableColumn(problems, SWT.LEFT);
+		path.setText("Path");
+		path.setWidth(200);
+	
+		TableColumn location = new TableColumn(problems, SWT.LEFT);
+		location.setText("Location");
+		location.setWidth(100);
+	
+		TableColumn type = new TableColumn(problems, SWT.LEFT);
+		type.setText("Type");
+		type.setWidth(80);
 	}
 
 	public static void main(String[] args) {
