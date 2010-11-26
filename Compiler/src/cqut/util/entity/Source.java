@@ -22,23 +22,17 @@ import cqut.util.Token;
 public class Source {
 
 	private static Source sourceCode;
-	private static String filepath;
 
 	private Source() {
 	}
 
 	public static Source getInstance() {
-		if (sourceCode == null) {
-			init();
-		}
 		return sourceCode;
 	}
 
 	public static Source getInstance(String filepath) {
-		if (sourceCode == null) {
-			init(filepath);
-		}
-		return sourceCode;
+		init(filepath);
+		return getInstance();
 	}
 
 	private static List<String> sources;// 源代码
@@ -48,19 +42,20 @@ public class Source {
 	private static int max_colspan;
 
 	private static int MAX_LINE;// 源代码文件的行数
+	private static boolean init = false;
 
 	private static void init(String filepath) {
+		if (!init) {
+			SystemProperty.readProperties();// 读取语言编码表
+			init = true;
+		}
+		sourceCode = null;
 		sourceCode = new Source();
-		SystemProperty.readProperties();// 读取语言编码表
 		sources = SourceReader.read(filepath);// 读源文件
 		MAX_LINE = sources.size();
 		max_colspan = sources.get(0).length();
 		row = 0;
 		colspan = 0;
-	}
-
-	private static void init() {
-		init(SourceReader.sourcePath);
 	}
 
 	public List<String> getSource() {
@@ -166,6 +161,19 @@ public class Source {
 		return row == MAX_LINE - 1;
 	}
 
+	public void destroy() {
+		sourceCode = null;
+	}
+
+	/**
+	 * 获取源文件行数
+	 * 
+	 * @return
+	 */
+	public int getLines() {
+		return MAX_LINE;
+	}
+
 	public Source back() {
 		row = 0;
 		colspan = 0;
@@ -180,15 +188,11 @@ public class Source {
 		Character ch = getCurrentCharacter();
 		String curr = ch.toString();
 
-		System.out.println("from Source: "+curr);
-
-		System.out.println("读到了一个" + curr + "啊");
-
 		boolean flag = true;
-		while (flag) {
-			if (ch == ' ' || ch == '	'|| ch == '\n') {
-				if(isLastCharacter()){
-					return ;
+		while (flag) {// 如果读到了空白符，跳过
+			if (ch == ' ' || ch == '	' || ch == '\n') {
+				if (isLastCharacter()) {
+					return;
 				}
 				ch = getNextCharacter();
 				curr = ch.toString();
@@ -211,18 +215,17 @@ public class Source {
 				+ EncodeTable.findCharactersByType(Token.ENCODETYPE_OPERATER)
 				+ "]")) {
 			recog = OperaterAnalysis.getInstance();
-		} 
-		else {
-			ErrorFacade.getInstance().addError(row,
-					"无法识别字符: '" + getCurrentCharacter() + "'");
-			if(Source.getInstance().isLastCharacter()){
+		} else {
+			ErrorFacade.getInstance().addError(
+					"无法识别字符: '" + getCurrentCharacter() + "'",
+					Error.ERROR_TYPE_LEXICAL);
+			if (Source.getInstance().isLastCharacter()) {
 				return;
 			}
 			getNextCharacter();
 			sort();
 			return;
 		}
-		System.out.println("交给了" + recog + "啊");
 		recog.recog(ch);
 	}
 }

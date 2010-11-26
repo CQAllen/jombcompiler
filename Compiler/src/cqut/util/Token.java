@@ -15,7 +15,7 @@ import cqut.util.entity.TokenMeta;
  */
 public class Token {
 
-	private List<TokenMeta> tokenTable;
+	private static List<TokenMeta> tokenTable;
 
 	private static Token token;
 	private int current;
@@ -44,6 +44,7 @@ public class Token {
 	public static Token getInstance() {
 		if (token == null) {
 			token = new Token();
+			tokenTable = new ArrayList<TokenMeta>();
 		}
 		return token;
 	}

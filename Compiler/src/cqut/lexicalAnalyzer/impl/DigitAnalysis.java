@@ -6,14 +6,13 @@ import cqut.util.Token;
 import cqut.util.entity.ErrorFacade;
 import cqut.util.entity.Source;
 import cqut.util.entity.SymbolMeta;
-import cqut.util.entity.TokenMeta;
+import cqut.util.entity.Error;
 
 public class DigitAnalysis implements Recog {
 
 	@Override
 	public void error(String message) {
-		ErrorFacade.getInstance().addError(Source.getInstance().getRow() + 1,
-				message);
+		ErrorFacade.getInstance().addError(message, Error.ERROR_TYPE_LEXICAL);
 	}
 
 	@Override

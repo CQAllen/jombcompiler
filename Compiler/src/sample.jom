@@ -1,9 +1,9 @@
 //this is jom program
 integer aasdf = 10;
-float a = 10.4;
+float a = 10.4s;
 void main{
 	do{
-		float h = 0.6;
+		float h = 0.6h;
 		char b='a';
 		aasdf = aasdf + 1;
 		if(aasdf==15){

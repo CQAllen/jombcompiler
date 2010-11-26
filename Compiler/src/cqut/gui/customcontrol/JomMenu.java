@@ -1,27 +1,16 @@
 package cqut.gui.customcontrol;
 
-import java.io.File;
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.TableItem;
 
-import cqut.gui.Window;
-import cqut.gui.util.SWTUtil;
-import cqut.util.SourceReader;
-import cqut.util.Symbol;
-import cqut.util.Token;
-import cqut.util.entity.Source;
-import cqut.util.entity.SymbolMeta;
-import cqut.util.entity.TokenMeta;
+import cqut.gui.listeners.FileEvent;
+import cqut.gui.listeners.FileListener;
+import cqut.gui.listeners.LexicalEvent;
+import cqut.gui.listeners.LexicalListener;
 
 public class JomMenu extends Menu {
 
@@ -31,7 +20,6 @@ public class JomMenu extends Menu {
 	private MenuItem grammar;// 语法分析菜单项
 	private MenuItem intermediate;// 中间代码菜单项
 	private MenuItem destination;// 目标代码生成菜单项
-	private MenuItem check;// 查看
 	private MenuItem help;// 帮助菜单项
 
 	private Menu fileMenu;// 文件菜单
@@ -52,7 +40,6 @@ public class JomMenu extends Menu {
 	private MenuItem minDFAItem;// DFA最小化
 
 	private Menu grammarMenu;// 语法分析菜单
-	private MenuItem grammerItem;// 语法分析
 	private MenuItem predictiveParsingItem;// LL(1)预测分析
 	private MenuItem operaterItem;// 运算符优先
 	private MenuItem lranalysis;// LR分析
@@ -60,9 +47,6 @@ public class JomMenu extends Menu {
 	private Menu intermediateMenu;
 
 	private Menu destinationMenu;
-
-	private Menu checkMenu;// 查看菜单
-	private MenuItem checkItem;// 查看
 
 	private Menu helpMenu;// 帮助菜单
 	private MenuItem aboutItem;// 关于
@@ -79,7 +63,6 @@ public class JomMenu extends Menu {
 		grammer(shell);// 语法分析菜单
 		intermediate(shell);
 		destination(shell);
-		check(shell);// 查看菜单
 		help(shell);// 帮助菜单
 		addFileListener();
 		addEditListener();
@@ -87,7 +70,6 @@ public class JomMenu extends Menu {
 		addGrammerListener();
 		addIntermediateListener();
 		addDestinationListener();
-		addCheckListener();
 		addHelpListener();
 	}
 
@@ -106,10 +88,12 @@ public class JomMenu extends Menu {
 		saveItem = new MenuItem(fileMenu, SWT.PUSH);
 		saveItem.setText("保存(&S)\tCtrl+S");
 		saveItem.setAccelerator(SWT.CTRL + 'S');
+		saveItem.setEnabled(false);
 
 		// File-->saveAsItem
 		saveAsItem = new MenuItem(fileMenu, SWT.PUSH);
 		saveAsItem.setText("另存为(&A)...");
+		saveAsItem.setEnabled(false);
 
 		// 分隔符
 		createSeparator(fileMenu);
@@ -174,10 +158,6 @@ public class JomMenu extends Menu {
 		grammarMenu = new Menu(shell, SWT.DROP_DOWN);
 		grammar.setMenu(grammarMenu);
 
-		grammerItem = new MenuItem(grammarMenu, SWT.PUSH);
-		grammerItem.setText("语法分析");
-		grammerItem.setEnabled(false);
-
 		predictiveParsingItem = new MenuItem(grammarMenu, SWT.PUSH);
 		predictiveParsingItem.setText("LL预测分析");
 		predictiveParsingItem.setEnabled(false);
@@ -205,17 +185,6 @@ public class JomMenu extends Menu {
 		destination.setMenu(destinationMenu);
 	}
 
-	private void check(Shell shell) {
-		check = new MenuItem(this, SWT.CASCADE);
-		check.setText("查看(&C)");
-		checkMenu = new Menu(shell, SWT.DROP_DOWN);
-		check.setMenu(checkMenu);
-
-		checkItem = new MenuItem(checkMenu, SWT.PUSH);
-		checkItem.setText("查看错误信息");
-		checkItem.setEnabled(false);
-	}
-
 	private void help(Shell shell) {
 		help = new MenuItem(this, SWT.CASCADE);
 		help.setText("帮助(&H)");
@@ -231,77 +200,35 @@ public class JomMenu extends Menu {
 		return Separator;
 	}
 
+	FileListener fl;
+
 	private void addFileListener() {
+		fl = new FileEvent();
 		saveAsItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				FileDialog saveDialog = new FileDialog(Display.getCurrent()
-						.getActiveShell(), SWT.SAVE);
-				saveDialog
-						.setFilterExtensions(new String[] { "*.jom;", "*.*" });
-				saveDialog.setFilterNames(new String[] { "Jom源文件 (*.jom)",
-						"All Files " });
-				String name = saveDialog.getFileName();
-				String path = saveDialog.open();
-				if (name.equals("")) {// 如果未填写名称，则无任何事件
-					return;
-				}
-				if (name.indexOf(".jom") != name.length() - 4) {// 如果未写入后缀名，自动添加上后缀名
-					name += ".jom";
-				}
-				File file = new File(saveDialog.getFilterPath(), name);
-				if (file.exists()) {// 如果文件已存在，则提示覆盖
-					int open = SWTUtil.showMessageBox(Display.getCurrent()
-							.getActiveShell(), "警告", "文件 " + file.getName()
-							+ " 已存在,是否要覆盖该文件？", SWT.ICON_WARNING | SWT.YES
-							| SWT.NO);
-					if (open != SWT.YES) {
-						return;
-					}
-				}
-				SourceReader.write(path, Window.highlightText.getText());
+				fl.saveAs();
 			}
 		});
 		exitItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				Display.getCurrent().getActiveShell().dispose();
-				Display.getCurrent().dispose();
+				fl.exit();
 			}
 		});
 		saveItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				SourceReader.write(Window.highlightText.getText());
+				fl.save();
 			}
 		});
 		openItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				System.out.println("open");
-				String name = SWTUtil
-						.openDialog(SWT.OPEN, new String[] { "*.jom;", "*.*" },// 打开书籍文件选择对话框
-								new String[] { "jom源文件" + " (*.jom)",
-										"所有文件" + " (*.*)" });
-				int a = 1;
-				if (name != null) {
-					Shell currentShell = Display.getCurrent().getActiveShell();
-					Cursor waitCursor = new Cursor(Display.getCurrent(),
-							SWT.CURSOR_WAIT);
-					currentShell.setCursor(waitCursor);// 设置鼠标忙
-
-					currentShell.setText("Jom编译器 --" + name);
-					StringBuffer sb = new StringBuffer();
-					for (String s : Source.getInstance(name).getSource()) {
-						sb.append((a++) + ": " + s);
-					}
-					Window.highlightText.setText(sb.toString());
-					lexicalItem.setEnabled(true);
-
-					currentShell.setCursor(null);// 设置鼠标正常
-					waitCursor.dispose();
-					openItem.setEnabled(false);
-				}
+				saveItem.setEnabled(true);
+				saveAsItem.setEnabled(true);
+				fl.open();
+				lexicalItem.setEnabled(true);
 			}
 		});
 	}
@@ -309,27 +236,14 @@ public class JomMenu extends Menu {
 	private void addEditListener() {
 	}
 
+	LexicalListener ll;
+
 	private void addLexicalListener() {
+		ll = new LexicalEvent();
 		lexicalItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				Window.symbol.removeAll();
-				Window.token.removeAll();
-				Source.getInstance().sort();
-				List<TokenMeta> tokenMeta = Token.getInstance().getAllMeta();
-				for (TokenMeta t : tokenMeta) {
-					new TableItem(Window.token, SWT.CENTER)
-							.setText(new String[] { t.getMeta(),
-									(t.getLine() + 1) + "", t.getPointer() + "" });
-				}
-				List<SymbolMeta> symbolMeta = Symbol.getInstance().getSymbol();
-				for (SymbolMeta t : symbolMeta) {
-					new TableItem(Window.symbol, SWT.CENTER)
-							.setText(new String[] { t.getMeta(),
-									t.getType() + "", t.getValue() + "",
-									t.getPointer() + "", t.getKind() + "" });
-				}
-				checkItem.setEnabled(true);
+				ll.lexical();
 			}
 		});
 	}
@@ -341,16 +255,6 @@ public class JomMenu extends Menu {
 	}
 
 	private void addDestinationListener() {
-	}
-
-	private void addCheckListener() {
-		checkItem.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				new ErrorDialog(Display.getCurrent().getActiveShell(), SWT.NONE)
-						.open();
-			}
-		});
 	}
 
 	private void addHelpListener() {

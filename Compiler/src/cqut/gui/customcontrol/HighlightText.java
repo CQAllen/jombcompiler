@@ -11,20 +11,17 @@ import org.eclipse.swt.custom.ExtendedModifyEvent;
 import org.eclipse.swt.custom.ExtendedModifyListener;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
-import cqut.gui.Window;
+import cqut.gui.listeners.FileEvent;
 import cqut.gui.util.Util;
 import cqut.util.EncodeTable;
 import cqut.util.Token;
 
 /**
- * 简单实现语法高亮的文本框,N多BUG,但是够这个项目用鸟
+ * 简单实现语法高亮的文本框,少量BUG,但是够这个项目用鸟
  * 
  * @author Cheng
  * 
@@ -45,10 +42,20 @@ public class HighlightText extends StyledText {
 		addListener();
 	}
 
+	boolean a = true;
+
 	private void addListener() {
 		this.addExtendedModifyListener(new ExtendedModifyListener() {
 			public void modifyText(ExtendedModifyEvent event) {
 				map.clear();
+				FileEvent.isModify = true;
+				if (a) {
+					String s = Display.getCurrent().getActiveShell().getText();
+					s = "*" + s;
+					Display.getCurrent().getActiveShell().setText(s);
+					s = null;
+					a = false;
+				}
 				int end = event.start + event.length - 1;
 				List<StyleRange> ranges = new ArrayList<StyleRange>();
 				if (event.start <= end) {
