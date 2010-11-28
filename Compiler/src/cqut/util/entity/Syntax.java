@@ -13,6 +13,9 @@ import java.util.List;
 public class Syntax implements Serializable {
 
 	/**
+	 * 每一个非终结符要对应一个first集和一个follow集。
+	 * 
+	 * 所有的非终结符最后得到一个预测分析表。
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
