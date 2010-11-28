@@ -24,7 +24,6 @@ public class DelimiterAnalysis implements Recog {
 
 	@Override
 	public void recog(Character ch) {
-		System.out.println(ch);
 		isDelimiter(ch);
 		switch (state) {
 		case 1:

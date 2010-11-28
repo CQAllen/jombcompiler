@@ -1,9 +1,10 @@
 package cqut.util.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
- * 语法类
+ * 语法实体
  * 
  * @author Cheng
  * 
@@ -16,7 +17,7 @@ public class Syntax implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private String starting;// 产生式头，有可能是开始符号
-	private String production;// 产生式
+	private List<String> production;// 各种候选式
 
 	public String getStarting() {
 		return starting;
@@ -26,11 +27,11 @@ public class Syntax implements Serializable {
 		this.starting = starting;
 	}
 
-	public String getProduction() {
+	public List<String> getProduction() {
 		return production;
 	}
 
-	public void setProduction(String production) {
+	public void setProduction(List<String> production) {
 		this.production = production;
 	}
 

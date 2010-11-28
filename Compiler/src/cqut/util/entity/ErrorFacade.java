@@ -20,7 +20,7 @@ public class ErrorFacade {
 
 	public void addError(String message, String type) {
 		Error error = new Error(message, type);
-		error.setLocation(Source.getInstance().getRow());
+		error.setLocation(Source.getInstance().getRow() + 1);
 		error.setPath(SourceReader.getAbsoluteFilePath());
 		error.setResource(SourceReader.getFileName());
 		errors.add(error);
@@ -34,8 +34,8 @@ public class ErrorFacade {
 	public List<Error> getErrors() {
 		return errors;
 	}
-	
-	public void clear(){
+
+	public void clear() {
 		errors.clear();
 	}
 }

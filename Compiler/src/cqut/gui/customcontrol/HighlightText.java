@@ -42,19 +42,16 @@ public class HighlightText extends StyledText {
 		addListener();
 	}
 
-	boolean a = true;
-
 	private void addListener() {
 		this.addExtendedModifyListener(new ExtendedModifyListener() {
 			public void modifyText(ExtendedModifyEvent event) {
 				map.clear();
 				FileEvent.isModify = true;
-				if (a) {
-					String s = Display.getCurrent().getActiveShell().getText();
+				String s = Display.getCurrent().getActiveShell().getText();
+				if (s.indexOf("*") == -1) {
 					s = "*" + s;
 					Display.getCurrent().getActiveShell().setText(s);
 					s = null;
-					a = false;
 				}
 				int end = event.start + event.length - 1;
 				List<StyleRange> ranges = new ArrayList<StyleRange>();

@@ -11,15 +11,13 @@ import cqut.util.entity.Syntax;
  */
 public interface SyntaxService {
 
-	public Syntax getNext();
-
-	public Syntax getPrevious();
-
-	public Syntax getLast();
-
-	public Syntax getFirst();
-
-	public Syntax getCurrent();
+	/**
+	 * 根据产生式头得到文法产生式
+	 * 
+	 * @param starting
+	 * @return
+	 */
+	public Syntax getSyntax(String starting);
 
 	public int size();
 }
