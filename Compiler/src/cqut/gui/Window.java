@@ -69,7 +69,7 @@ public class Window {
 		SashForm form = new SashForm(parent, SWT.HORIZONTAL);
 		form.setLayout(new FillLayout());
 		createListComposite(form);
-		highlightText = new HighlightText(form, SWT.BORDER | SWT.WRAP);
+		highlightText = new HighlightText(form, SWT.WRAP);
 		highlightText.setFocus();
 		Composite child = new Composite(form, SWT.NONE);
 		child.setLayout(new FillLayout());
@@ -138,23 +138,23 @@ public class Window {
 				| SWT.BORDER);
 		problems.setHeaderVisible(true);
 		problems.setLinesVisible(true);
-	
+
 		TableColumn description = new TableColumn(problems, SWT.LEFT);
 		description.setText("Description");
 		description.setWidth(300);
-	
+
 		TableColumn resource = new TableColumn(problems, SWT.LEFT);
 		resource.setText("Resource");
 		resource.setWidth(100);
-	
+
 		TableColumn path = new TableColumn(problems, SWT.LEFT);
 		path.setText("Path");
 		path.setWidth(200);
-	
+
 		TableColumn location = new TableColumn(problems, SWT.LEFT);
 		location.setText("Location");
 		location.setWidth(100);
-	
+
 		TableColumn type = new TableColumn(problems, SWT.LEFT);
 		type.setText("Type");
 		type.setWidth(80);
