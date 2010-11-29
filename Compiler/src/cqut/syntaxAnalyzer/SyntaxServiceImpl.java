@@ -36,4 +36,9 @@ public class SyntaxServiceImpl implements SyntaxService {
 		return null;
 	}
 
+	@Override
+	public List<Syntax> getSyntax() {
+		return null;
+	}
+
 }
