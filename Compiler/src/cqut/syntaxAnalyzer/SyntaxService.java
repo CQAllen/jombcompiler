@@ -14,6 +14,13 @@ import cqut.util.entity.Syntax;
 public interface SyntaxService {
 
 	/**
+	 * 获取全部产生式
+	 * 
+	 * @return
+	 */
+	public List<Syntax> getSyntax();
+
+	/**
 	 * 根据产生式头得到文法产生式
 	 * 
 	 * @param starting
