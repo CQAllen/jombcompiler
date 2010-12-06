@@ -55,7 +55,7 @@ public class SyntaxServiceImpl implements SyntaxService {
 	}
 
 	@Override
-	public List<Character> getTerminalSymbol(String starting, int index) {
+	public List<String> getTerminalSymbol(String starting, int index) {
 		return null;
 	}
 
