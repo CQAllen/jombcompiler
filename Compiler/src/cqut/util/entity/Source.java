@@ -46,7 +46,7 @@ public class Source {
 
 	private static void init(String filepath) {
 		if (!init) {
-			SystemProperty.readProperties();// 读取语言编码表
+			SystemProperty.readProperties("src/word.properties");// 读取语言编码表
 			init = true;
 		}
 		sourceCode = null;

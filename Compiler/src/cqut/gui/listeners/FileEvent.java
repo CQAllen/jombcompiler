@@ -10,7 +10,9 @@ import org.eclipse.swt.widgets.Shell;
 
 import cqut.gui.Window;
 import cqut.gui.util.SWTUtil;
+import cqut.syntaxAnalyzer.SyntaxServiceImpl;
 import cqut.util.SourceReader;
+import cqut.util.SystemProperty;
 import cqut.util.entity.Source;
 
 public class FileEvent implements FileListener {
@@ -42,6 +44,8 @@ public class FileEvent implements FileListener {
 			for (String s : source) {
 				sb.append(s);
 			}
+			SyntaxServiceImpl.syntaxes = SystemProperty
+					.readProperties("src/syntax.properties");
 			Window.highlightText.setText(sb.toString());
 			path = SourceReader.getAbsoluteFilePath();
 			int line = Source.getInstance().getLines();

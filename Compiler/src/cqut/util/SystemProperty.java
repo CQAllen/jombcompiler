@@ -10,20 +10,11 @@ import java.util.Properties;
 
 public class SystemProperty {
 
-	private static String profilepath = "src/word.properties";
-	private static Map properties;
-	private static Properties props;
-
-	public static Map readProperties() {
-		if (props == null) {
-			props = new Properties();
-		}
-		if (properties == null) {
-			properties = new HashMap();
-		}
+	public static Map readProperties(String path) {
+		Properties props = new Properties();
+		Map properties = new HashMap();
 		try {
-			InputStream in = new BufferedInputStream(new FileInputStream(
-					profilepath));
+			InputStream in = new BufferedInputStream(new FileInputStream(path));
 			props.load(in);
 			Enumeration<?> en = props.propertyNames();
 			while (en.hasMoreElements()) {
@@ -35,10 +26,6 @@ public class SystemProperty {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return properties;
-	}
-
-	public static Map getProperties() {
 		return properties;
 	}
 }
