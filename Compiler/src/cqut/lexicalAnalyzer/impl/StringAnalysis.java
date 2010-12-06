@@ -53,12 +53,10 @@ public class StringAnalysis implements Recog {
 	}
 
 	public void error(String message) {
-		// TODO Auto-generated method stub
 		System.out.println(message);
 	}
 
 	private void isIdentifier(Character ch) {// 包含下划线,不可能是关键字
-		// TODO Auto-generated method stub
 		// if (ch != ' ' && ch != ';' && ch != '+' && ch != '-' && ch != '*'
 		// && ch != '/' && ch != '=' && ch != '(' && ch != ')'
 		// && ch != '[' && ch != ']') {
@@ -89,7 +87,6 @@ public class StringAnalysis implements Recog {
 	}
 
 	private void isKeyword(Character ch) {// 纯字母组成，有可能是关键字
-		// TODO Auto-generated method stub
 //		if (ch != ' ' && ch != ';' && ch != '+' && ch != '-' && ch != '*'
 //				&& ch != '/' && ch != '=' && ch != '(' && ch != ')'
 //				&& ch != '[' && ch != ']') {
@@ -136,7 +133,6 @@ public class StringAnalysis implements Recog {
 	}
 
 	private void insertSymbol(String Str_temp) {
-		// TODO Auto-generated method stub
 		// Symbol.getInstance().getSymbol()
 		SymbolMeta Cur = new SymbolMeta();
 		Cur.setMeta(Str_temp);
@@ -147,7 +143,6 @@ public class StringAnalysis implements Recog {
 	}
 
 	private void addIdentifier(String Str_temp) {
-		// TODO Auto-generated method stub
 //		TokenMeta Cur = new TokenMeta();
 //		Cur.setLine(Source.getInstance().getRow());
 //		Cur.setMeta(Str_temp);
@@ -156,7 +151,6 @@ public class StringAnalysis implements Recog {
 	}
 
 	private void addKeyword(String Str_temp) {
-		// TODO Auto-generated method stub
 		int Cur_pointer = EncodeTable.search(Str_temp);
 //		TokenMeta Cur = new TokenMeta();
 //		Cur.setLine(Source.getInstance().getRow());
