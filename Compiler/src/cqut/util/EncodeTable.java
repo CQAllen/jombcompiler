@@ -17,7 +17,7 @@ public class EncodeTable {
 
 	static {
 		if (encodeTable == null) {
-			encodeTable = SystemProperty.readProperties();
+			encodeTable = SystemProperty.readProperties("src/word.properties");
 		}
 	}
 
@@ -54,7 +54,7 @@ public class EncodeTable {
 	}
 
 	private static String find(int begin, int end) {
-		Map map = SystemProperty.getProperties();
+		Map map = encodeTable;
 		StringBuffer sb = new StringBuffer();
 		Iterator it = map.entrySet().iterator();
 		while (it.hasNext()) {
