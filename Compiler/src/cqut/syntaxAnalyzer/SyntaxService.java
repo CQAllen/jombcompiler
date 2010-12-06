@@ -45,7 +45,7 @@ public interface SyntaxService {
 	 *            索引位置，就是第几个候选式，从0开始计算
 	 * @return
 	 */
-	public String getNonTerminalStarting(String starting, int index);
+	public List<String> getNonTerminalStarting(String starting, int index);
 
 	/**
 	 * 获取指定文法中的所有非终结符，以|为分隔符
@@ -53,7 +53,7 @@ public interface SyntaxService {
 	 * @param starting
 	 * @return
 	 */
-	public List<Character> getTerminalSymbol(String starting);
+	public List<String> getTerminalSymbol(String starting);
 
 	/**
 	 * 获取指定文法中指定索引位置的的所有非终结符，以|为分隔符
