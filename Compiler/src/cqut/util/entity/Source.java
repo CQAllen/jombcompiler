@@ -211,9 +211,9 @@ public class Source {
 			recog = DelimiterAnalysis.getInstance();
 		} else if (ch == '/') {// 如果是反斜杠
 			recog = NoteOrDivsionAnalysis.getInstance();
-		} else if (curr.matches("["
+		} else if (curr.matches("\\["
 				+ EncodeTable.findCharactersByType(Token.ENCODETYPE_OPERATER)
-				+ "]")) {
+				+ "\\]")) {
 			recog = OperaterAnalysis.getInstance();
 		} else {
 			ErrorFacade.getInstance().addError(
